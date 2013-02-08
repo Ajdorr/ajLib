@@ -2,12 +2,12 @@ OTHER_FILES += \
     README.md
 
 HEADERS += \
-    sequence.h \
-    matrix3.h \
-    matrix.h \
-    jmath.h
+    jmath/sequence.h \
+    jmath/matrix3.h \
+    jmath/matrix.h \
+    jmath/jmath.h
 
 SOURCES += \
-    sequence.cpp \
-    matrix3.cpp \
-    matrix.cpp
+    jmath/sequence.cpp \
+    jmath/matrix3.cpp \
+    jmath/matrix.cpp
