@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
-#include "jutil.h"
+#include "ajutil.h"
 #include "jclient.h"
 
 jclient::jclient()

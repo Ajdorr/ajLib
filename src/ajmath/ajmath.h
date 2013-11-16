@@ -1,6 +1,6 @@
 #ifndef JMATH_H
 #define JMATH_H
-#include <math.h>
+#include <ajmath.h>
 #include "sequence.h"
 #include "matrix.h"
 #include "matrix3.h"

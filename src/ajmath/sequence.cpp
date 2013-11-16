@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "jmath.h"
+#include "ajmath.h"
 #include "sequence.h"
 
 using namespace std;

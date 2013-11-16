@@ -8,22 +8,22 @@ DEPENDPATH += . jmath jutil
 INCLUDEPATH += . jutil jmath
 
 # Input
-HEADERS += jmath/jmath.h \
-           jmath/matrix.h \
-           jmath/matrix3.h \
-           jmath/sequence.h \
-           jutil/BinTree.h \
-           jutil/jutil.h \
-           jutil/list.h \
+HEADERS += ajmath/ajmath.h \
+           ajmath/matrix.h \
+           ajmath/matrix3.h \
+           ajmath/sequence.h \
+           ajutil/BinTree.h \
+           ajutil/ajutil.h \
+           ajutil/list.h \
     jnetwork/jserver.h \
     jnetwork/jclient.h
 SOURCES += main.cpp \
-           jmath/jmath.cpp \
-           jmath/matrix.cpp \
-           jmath/matrix3.cpp \
-           jmath/sequence.cpp \
-    jnetwork/jserver.cpp \
-    jnetwork/jclient.cpp \
-    jutil/BinTree.cpp \
-    jutil/jutil.cpp \
-    jutil/list.cpp
+           ajmath/ajmath.cpp \
+           ajmath/matrix.cpp \
+           ajmath/matrix3.cpp \
+           ajmath/sequence.cpp \
+    ajnetwork/ajserver.cpp \
+    ajnetwork/ajclient.cpp \
+    ajutil/BinTree.cpp \
+    ajutil/ajutil.cpp \
+    ajutil/list.cpp

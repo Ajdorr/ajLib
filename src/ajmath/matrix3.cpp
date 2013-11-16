@@ -1,6 +1,6 @@
 #include <math.h>
 #include "matrix3.h"
-#include "jmath.h"
+#include "ajmath.h"
 
 /*
  *

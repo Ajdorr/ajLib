@@ -1,4 +1,4 @@
-#include "jmath.h"
+#include "ajmath.h"
 
 /*
  *

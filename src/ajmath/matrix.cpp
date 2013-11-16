@@ -1,6 +1,6 @@
 #include <iostream>
 #include <math.h>
-#include "jmath.h"
+#include "ajmath.h"
 #include "matrix.h"
 #include "sequence.h"
 
