@@ -1,6 +1,6 @@
 #include <sys/time.h>
 #include <stdlib.h>
-#include "jutil.h"
+#include "ajutil.h"
 
 void quicksort(int arr[], unsigned int st, unsigned int fn) {
     unsigned int l, r, piv;
@@ -113,13 +113,13 @@ int itoa_helper(int a, unsigned int base, unsigned int count, char **ret) {
 
     if (i == 0) {
         if (a < 0) {
-            *ret = malloc(count*sizeof(char) + 2);
+            *ret = (char*)malloc(count*sizeof(char) + 2);
             *ret[0] = '-';
             *ret[1] = t;
             return 2;
         }
         else {
-            *ret = malloc(count*sizeof(char) + 1);
+            *ret = (char*)malloc(count*sizeof(char) + 1);
             *ret[0] = t;
             return 1;
         }

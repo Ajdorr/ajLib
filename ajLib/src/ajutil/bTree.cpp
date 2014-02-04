@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "BinTree.h"
+#include "bTree.h"
 
 
 struct btn {
@@ -13,7 +13,7 @@ struct btn {
     struct btn *l,*r;
 };
 
-typedef struct BinTree {
+typedef struct bTree {
     struct btn* head;
 
     void(*dest)(void*, void*);
@@ -47,8 +47,8 @@ void delete_btn(struct btn *n, void(*del)(void*,void*)) {
     free(n);
 }
 
-struct BinTree *new_BinTree(void(*d)(void*, void*)) {
-    struct BinTree *p = (struct BinTree*)malloc(sizeof(struct BinTree));
+struct bTree *new_bTree(void(*d)(void*, void*)) {
+    struct bTree *p = (struct bTree*)malloc(sizeof(struct bTree));
 
     p->head = NULL;
     p->dest = d;
@@ -68,7 +68,7 @@ void btn_deleteSub(struct btn *n, void(*d)(void*,void*)) {
     return;
 }
 
-void delete_BinTree(struct BinTree* tree) {
+void delete_bTree(struct bTree* tree) {
     if (tree == NULL) {
         return;
     }
@@ -111,7 +111,7 @@ struct btn **btnSearch(struct btn **s, void *k, unsigned int len) {
     return s;
 }
 
-int BinTree_Insert(struct BinTree* tree, void *key, unsigned int l, void *data) {
+int bTree_Insert(struct bTree* tree, void *key, unsigned int l, void *data) {
     struct btn **n;
 
     n = btnSearch(&(tree->head), key, l);
@@ -126,7 +126,7 @@ int BinTree_Insert(struct BinTree* tree, void *key, unsigned int l, void *data) 
 }
 
 // search through tree for a node with key
-void *BinTree_Search(struct BinTree *tree, void *key, unsigned int len) {
+void *bTree_Search(struct bTree *tree, void *key, unsigned int len) {
     struct btn **n;
 
     n = btnSearch(&(tree->head), key, len);
@@ -151,7 +151,7 @@ struct btn **btn_GetRightMost(struct btn **vic) {
     return vic;
 }
 
-int BinTree_Delete(struct BinTree* tree, void *key, unsigned int l)  {
+int bTree_Delete(struct bTree* tree, void *key, unsigned int l)  {
     struct btn **vic, **fix, *rep;
 
     vic = btnSearch(&(tree->head), key, l);
@@ -194,7 +194,7 @@ void btn_ExecAll(struct btn *n, void(*f)(void*,void*), void *info) {
     return;
 }
 
-void BinTree_ExecAll(struct BinTree *t, void(*f)(void*,void*), void* info) {
+void bTree_ExecAll(struct bTree *t, void(*f)(void*,void*), void* info) {
     btn_ExecAll(t->head, f, info);
 }
 
