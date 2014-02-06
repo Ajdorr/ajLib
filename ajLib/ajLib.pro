@@ -6,7 +6,7 @@
 
 QT       -= core gui
 
-TARGET = ajLib
+TARGET = ajLib csc418a1
 TEMPLATE = lib
 CONFIG += staticlib
 
@@ -21,13 +21,14 @@ SOURCES += \
     src/ajutil/ajutil.cpp \
     src/main.cpp \
     src/ajgl/window.cpp \
-    src/ajgl/scene.cpp \
-    src/ajgl/rectangle.cpp \
     src/ajgl/color.cpp \
-    src/ajgl/object2d.cpp \
-    src/ajutil/bTree.cpp
+    src/ajutil/bTree.cpp \
+    src/ajgl/object.cpp \
+    src/ajmath/matrix4.cpp \
+    src/ajutil/dlist.cpp
 
-HEADERS += ajlib.h \
+HEADERS += \
+    src/ajlib.h \
     src/ajmath/sequence.h \
     src/ajmath/matrix3.h \
     src/ajmath/matrix.h \
@@ -35,18 +36,26 @@ HEADERS += ajlib.h \
     src/ajutil/list.h \
     src/ajutil/ajutil.h \
     src/ajgl/window.h \
-    src/ajgl/scene.h \
-    src/ajgl/rectangle.h \
     src/ajgl/color.h \
-    src/ajgl/object2d.h \
-    src/ajutil/bTree.h
+    src/ajutil/bTree.h \
+    src/ajgl/object.h \
+    src/ajmath/matrix4.h \
+    src/ajgl/ajgl.h \
+    src/ajutil/dlist.h
 
-headers.path = $$OUT_PWD/inc
-headers.files = ajlib.h \
-    src/ajmath/*.h \
-    src/ajutil/*.h
+ajlib.path = $$OUT_PWD/inc
+ajlib.files = src/ajlib.h
 
-INSTALLS += headers
+mathlib.path = $$OUT_PWD/inc/ajmath
+mathlib.files = src/ajmath/*.h
+
+utillib.path = $$OUT_PWD/inc/ajutil
+utillib.files = src/ajutil/*.h
+
+gllib.path = $$OUT_PWD/inc/ajgl
+gllib.files = src/ajgl/*.h
+
+INSTALLS += ajlib mathlib utillib gllib
 
 CONFIG(release, debug | release) {
     SOURCES -= src/main.cpp
@@ -61,3 +70,5 @@ CONFIG(debug, debug | release) {
 
     QT += core
 }
+
+OTHER_FILES +=
