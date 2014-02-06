@@ -1,4 +1,0 @@
-myLib
-=====
-
-My Personal Library
