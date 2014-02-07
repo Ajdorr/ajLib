@@ -28,12 +28,13 @@ public:
     // static functions
     static void initWindows(int argc, char** argv);
 
-    Window(int posx, int posy, int sizex, int sizey, char* name);
+    Window(int posx, int posy, int sizex, int sizey, const char* name);
     ~Window();
 
     // Class Functions
     void resize(int w, int h);
     void display();
+    void start();
 };
 
 
