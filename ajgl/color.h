@@ -4,10 +4,10 @@
 class Color
 {
 public:
-    float red, blue, green, alpha;
+    float r, b, g, a;
 
     Color();
-    Color(float r, float b, float g, float a);
+    Color(float red, float blue, float green, float alpha);
 };
 
 #endif // COLOR_H
