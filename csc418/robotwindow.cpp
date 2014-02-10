@@ -119,9 +119,9 @@ const char robotname[] = "RobotWindow";
 RobotWindow::RobotWindow():
     Window(10, 10, 480, 640, robotname),
     body("Robot Body", 3*ROBOT_UNIT, 4*ROBOT_UNIT,
-         Vector3(1, 1, 1)),
+         Vector3(.87, .83, .9)),
     hips("Robot Hips", 5*ROBOT_UNIT, ROBOT_UNIT,
-         Vector3(1, 1, 1), Vector3(0.0, -2.5*ROBOT_UNIT, 0)),
+         Vector3(.2, .2, .2), Vector3(0.0, -2.5*ROBOT_UNIT, 0)),
     neck("Robot Neck", Vector3(0, 0.5, 0.7), Vector3(0.0, 2.5*ROBOT_UNIT, 0),
          Vector3(0, 1.5*ROBOT_UNIT, 0), Vector3(0,0,-90)),
     head("Robot Head", Vector3(0, 0.6, 0.7), Vector3(-2*ROBOT_UNIT, 0, 0)),
