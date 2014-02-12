@@ -14,32 +14,32 @@ using namespace std;
  *
  */
 
-vectorn::vectorn(){
+VectorN::VectorN(){
     V = NULL;
     n = 0;
 }
 
-vectorn::vectorn(const vectorn &v) {
+VectorN::VectorN(const VectorN &v) {
     n = v.n;
     V = new double[n];
     for (unsigned int i = 0; i < v.n; i++)
         V[i] = v.V[i];
 }
 
-vectorn::vectorn(double *_v, unsigned int _n){
+VectorN::VectorN(double *_v, unsigned int _n){
     n = _n;
     V = new double[n];
     for (unsigned int i = 0; i < _n; i++)
         V[i] = _v[i];
 }
 
-vectorn::~vectorn() {
+VectorN::~VectorN() {
     if (V)
         delete[] V;
     n = 0;
 }
 
-vectorn& vectorn::operator=(const vectorn &v) {
+VectorN& VectorN::operator=(const VectorN &v) {
     if (&v == this)
         return *this;
     if (V)
@@ -54,8 +54,8 @@ vectorn& vectorn::operator=(const vectorn &v) {
 }
 
 // Vector Argumented Operations
-vectorn vectorn::operator+(const vectorn &v) {
-    vectorn ng;
+VectorN VectorN::operator+(const VectorN &v) {
+    VectorN ng;
     if (v.n != n)
         return ng;
 
@@ -68,8 +68,8 @@ vectorn vectorn::operator+(const vectorn &v) {
     return ng;
 }
 
-vectorn vectorn::operator-(const vectorn &v){
-    vectorn ng;
+VectorN VectorN::operator-(const VectorN &v){
+    VectorN ng;
     if (v.n != n)
         return ng;
 
@@ -82,7 +82,7 @@ vectorn vectorn::operator-(const vectorn &v){
     return ng;
 }
 
-vectorn& vectorn::operator+=(const vectorn &v) {
+VectorN& VectorN::operator+=(const VectorN &v) {
     if (v.n != n)
         return *this;
 
@@ -93,7 +93,7 @@ vectorn& vectorn::operator+=(const vectorn &v) {
 }
 
 
-vectorn& vectorn::operator-=(const vectorn &v){
+VectorN& VectorN::operator-=(const VectorN &v){
     if (v.n != n)
         return *this;
 
@@ -103,7 +103,7 @@ vectorn& vectorn::operator-=(const vectorn &v){
     return *this;
 }
 
-vectorn& vectorn::operator*=(const matrix &A) {
+VectorN& VectorN::operator*=(const Matrix &A) {
     unsigned int i, j;
     double *t;
 
@@ -125,7 +125,7 @@ vectorn& vectorn::operator*=(const matrix &A) {
 }
 
 
-double vectorn::operator*(const vectorn &v) {
+double VectorN::operator*(const VectorN &v) {
     double ret = 0;
     if (v.n != n)
         return ret;
@@ -138,16 +138,16 @@ double vectorn::operator*(const vectorn &v) {
 
 
 // Scalar argumented operations
-vectorn vectorn::operator*(const double a) {
-    vectorn ng(*this);
+VectorN VectorN::operator*(const double a) {
+    VectorN ng(*this);
 
     ng *=a;
 
     return ng;
 }
 
-vectorn vectorn::operator/(const double a) {
-    vectorn ng(*this);
+VectorN VectorN::operator/(const double a) {
+    VectorN ng(*this);
 
     ng *= 1/a;
 
@@ -155,25 +155,25 @@ vectorn vectorn::operator/(const double a) {
 }
 
 // Compound Operations
-vectorn& vectorn::operator*=(const double a) {
+VectorN& VectorN::operator*=(const double a) {
     for (unsigned int i = 0; i < n; i++)
         V[i] *= a;
 
     return *this;
 }
 
-vectorn& vectorn::operator/=(const double a){
+VectorN& VectorN::operator/=(const double a){
     *this *= 1/a;
 
     return *this;
 }
 
 // Accessibility Operators
-double& vectorn::operator[](const int i) {
+double& VectorN::operator[](const int i) {
     return V[i];
 }
 
-std::ostream& operator<<(std::ostream &os, const vectorn &v){
+std::ostream& operator<<(std::ostream &os, const VectorN &v){
     unsigned int i;
     os << "<";
     if (v.n == 0){
@@ -188,12 +188,12 @@ std::ostream& operator<<(std::ostream &os, const vectorn &v){
     return os;
 }
 
-unsigned int vectorn::dim() const {
+unsigned int VectorN::dim() const {
     return n;
 }
 
-vectorn vectorn::unit() {
-    vectorn ng;
+VectorN VectorN::unit() {
+    VectorN ng;
     double mg = this->mag();
     if (mg == 0)
         return ng;
@@ -204,7 +204,7 @@ vectorn vectorn::unit() {
     return ng;
 }
 
-double vectorn::mag() {
+double VectorN::mag() {
     double ret = 0;
     for (unsigned int i = 0; i < n; i++)
         ret += V[i]*V[i];
@@ -212,14 +212,14 @@ double vectorn::mag() {
     return sqrt(ret);
 }
 
-void vectorn::zero(){
+void VectorN::zero(){
     for (unsigned int i = 0; i < n; i++)
         V[i] = 0;
 
 }
 
-vectorn operator*(const double &a, const vectorn &v) {
-    vectorn ng(v);
+VectorN operator*(const double &a, const VectorN &v) {
+    VectorN ng(v);
     ng *= a;
     return ng;
 }
@@ -240,7 +240,7 @@ vectorn operator*(const double &a, const vectorn &v) {
  *
  */
 
-void matrix::delMat() {
+void Matrix::delMat() {
     unsigned int i;
 
     for (i = 0; i < n; i++)
@@ -250,7 +250,7 @@ void matrix::delMat() {
 
 // using row zero out index (x,y)
 // returns the multiplication factor
-double matrix::zeroOnIndex(unsigned int row, unsigned int x, unsigned int y) {
+double Matrix::zeroOnIndex(unsigned int row, unsigned int x, unsigned int y) {
     double t = -M[x][y]/M[row][y];
     unsigned int i;
 
@@ -270,7 +270,7 @@ double matrix::zeroOnIndex(unsigned int row, unsigned int x, unsigned int y) {
  *
  */
 
-matrix::matrix()
+Matrix::Matrix()
 {
     n = 0;
     m = 0;
@@ -278,7 +278,7 @@ matrix::matrix()
 
 }
 
-matrix::matrix(matrix const &p) {
+Matrix::Matrix(Matrix const &p) {
     unsigned int i, j;
     n = p.n;
     m = p.m;
@@ -292,7 +292,7 @@ matrix::matrix(matrix const &p) {
     }
 }
 
-matrix::matrix(unsigned int a, unsigned int b)
+Matrix::Matrix(unsigned int a, unsigned int b)
 {
     unsigned int i;
 
@@ -311,7 +311,7 @@ matrix::matrix(unsigned int a, unsigned int b)
 
 }
 
-matrix::matrix(double **d, unsigned int _n, unsigned int _m) {
+Matrix::Matrix(double **d, unsigned int _n, unsigned int _m) {
     unsigned int i, j;
     n = _n;
     m = _m;
@@ -324,7 +324,7 @@ matrix::matrix(double **d, unsigned int _n, unsigned int _m) {
     }
 }
 
-matrix::matrix(double *d, unsigned int _n, unsigned int deg) {
+Matrix::Matrix(double *d, unsigned int _n, unsigned int deg) {
     unsigned int i, j;
     n = _n;
     m = deg+1;
@@ -339,7 +339,7 @@ matrix::matrix(double *d, unsigned int _n, unsigned int deg) {
     }
 }
 
-matrix::~matrix()
+Matrix::~Matrix()
 {
     this->delMat();
     M = NULL;
@@ -348,7 +348,7 @@ matrix::~matrix()
 }
 
 
-void matrix::init(double **d, unsigned int _n,unsigned int _m) {
+void Matrix::init(double **d, unsigned int _n,unsigned int _m) {
     unsigned int i, j;
     if (M){
         for (i = 0; i < n; i++){
@@ -380,7 +380,7 @@ void matrix::init(double **d, unsigned int _n,unsigned int _m) {
 
 // Assignement Operators
 
-matrix& matrix::operator=(const double d) {
+Matrix& Matrix::operator=(const double d) {
     unsigned int i,j;
 
     for (i = 0; i < n; i++) {
@@ -391,7 +391,7 @@ matrix& matrix::operator=(const double d) {
     return *this;
 }
 
-matrix& matrix::operator=(const matrix &p) {
+Matrix& Matrix::operator=(const Matrix &p) {
     unsigned int i,j;
 
     if (&p == this) {
@@ -418,8 +418,8 @@ matrix& matrix::operator=(const matrix &p) {
 
 // Addition
 
-matrix matrix::operator+(const matrix &p) {
-    matrix R;
+Matrix Matrix::operator+(const Matrix &p) {
+    Matrix R;
     unsigned int i, j;
 
     if ((n != p.n)&&(m != p.m))
@@ -439,9 +439,9 @@ matrix matrix::operator+(const matrix &p) {
 
 // Subtraction
 
-matrix matrix::operator-(){
+Matrix Matrix::operator-(){
     unsigned int i, j;
-    matrix R(*this);
+    Matrix R(*this);
 
     for (i = 0; i < n; i++) {
         for (j = 0; j < m; j++) {
@@ -452,9 +452,9 @@ matrix matrix::operator-(){
     return R;
 }
 
-matrix matrix::operator-(const double d){
+Matrix Matrix::operator-(const double d){
     unsigned int i, j;
-    matrix R(*this);
+    Matrix R(*this);
 
     for (i = 0; i < n; i++) {
         for (j = 0; j < m; j++) {
@@ -465,8 +465,8 @@ matrix matrix::operator-(const double d){
     return R;
 }
 
-matrix matrix::operator-(const matrix &p) {
-    matrix R;
+Matrix Matrix::operator-(const Matrix &p) {
+    Matrix R;
     unsigned int i, j;
 
     if ((n != p.n)&&(m != p.m)) {
@@ -485,9 +485,9 @@ matrix matrix::operator-(const matrix &p) {
 
 // Multiplication
 
-matrix matrix::operator*(double a) {
+Matrix Matrix::operator*(double a) {
     unsigned int i, j;
-    matrix R(*this);
+    Matrix R(*this);
 
     for (i = 0; i < n; i++) {
         for (j = 0; j < m; j++) {
@@ -498,8 +498,8 @@ matrix matrix::operator*(double a) {
     return R;
 }
 
-matrix matrix::operator*(const matrix &p) {
-    matrix R;
+Matrix Matrix::operator*(const Matrix &p) {
+    Matrix R;
     unsigned int i, j, k;
 
     if (this->m != p.n) {
@@ -523,8 +523,8 @@ matrix matrix::operator*(const matrix &p) {
 }
 
 
-vectorn matrix::operator*(const vectorn& v){// returns the null vector if dimensions do not match
-    vectorn ret;
+VectorN Matrix::operator*(const VectorN& v){// returns the null vector if dimensions do not match
+    VectorN ret;
 
     if (v.dim() != m)
         return ret;
@@ -543,7 +543,7 @@ vectorn matrix::operator*(const vectorn& v){// returns the null vector if dimens
 
 // Addition
 
-matrix& matrix::operator+=(const matrix &p) {
+Matrix& Matrix::operator+=(const Matrix &p) {
     unsigned int i, j;
 
     if ((this->n!=p.n)&&(this->m!=p.m)) {
@@ -563,7 +563,7 @@ matrix& matrix::operator+=(const matrix &p) {
     return *this;
 }
 
-matrix& matrix::operator-=(const matrix &p) {
+Matrix& Matrix::operator-=(const Matrix &p) {
     unsigned int i, j;
 
     if ( (this->n!=p.n)||(this->m!=p.m)){
@@ -583,7 +583,7 @@ matrix& matrix::operator-=(const matrix &p) {
     return *this;
 }
 
-matrix& matrix::operator*=(const double d) {
+Matrix& Matrix::operator*=(const double d) {
     unsigned int i, j;
 
     for (i = 0; i < n; i++) {
@@ -595,7 +595,7 @@ matrix& matrix::operator*=(const double d) {
     return *this;
 }
 
-matrix& matrix::operator*=(const matrix &p) {
+Matrix& Matrix::operator*=(const Matrix &p) {
     unsigned int i, j, k;
     double **fng;
 
@@ -632,7 +632,7 @@ matrix& matrix::operator*=(const matrix &p) {
  *
  */
 
-std::ostream& operator<<(std::ostream& os, const matrix& A) {
+std::ostream& operator<<(std::ostream& os, const Matrix& A) {
     unsigned int i, j;
     for (i = 0; i < A.n; i++) {
         os << "[ ";
@@ -653,7 +653,7 @@ std::ostream& operator<<(std::ostream& os, const matrix& A) {
 
 // Member and Pointer Operators
 
-double* matrix::operator[](unsigned int i) {
+double* Matrix::operator[](unsigned int i) {
     return M[i];
 }
 
@@ -663,15 +663,15 @@ double* matrix::operator[](unsigned int i) {
  *
  */
 
-unsigned int matrix::dimr() const{
+unsigned int Matrix::dimr() const{
     return n;
 }
 
-unsigned int matrix::dimc() const{
+unsigned int Matrix::dimc() const{
     return m;
 }
 
-void matrix::trans() {
+void Matrix::trans() {
     unsigned int i, j;
     double t;
     if (n == m) {
@@ -702,7 +702,7 @@ void matrix::trans() {
     }
 }
 
-void matrix::iden() {
+void Matrix::iden() {
     unsigned int i, j;
 
     for (i = 0; i < n; i++){
@@ -715,23 +715,19 @@ void matrix::iden() {
     }
 }
 
-void matrix::zero() {
+void Matrix::zero() {
     unsigned int i, j;
     for (i = 0; i < n; i++)
         for (j=0; j<m; j++)
             M[i][j] = 0;
 }
 
-double matrix::det() {
+double Matrix::det() {
     int temp[n], sgn = 1;
     unsigned int i;
     double ret=0, term;
-    sequence col;
-
-    for (i = 0; i < n; i++)
-        temp[i] = i;
-
-    col.init(SEQT_PERM, temp, n, n);
+    for (i = 0; i < n; i++) temp[i] = i;
+    sequence col(SEQT_PERM, temp, n, n);
 
     do {
         for (term = 1, i = 0; i < n; i++)
@@ -744,7 +740,7 @@ double matrix::det() {
     return ret;
 }
 
-void matrix::swpRow(unsigned int x, unsigned int y) {
+void Matrix::swpRow(unsigned int x, unsigned int y) {
     double t;
     if (x == y)
        return;
@@ -755,13 +751,13 @@ void matrix::swpRow(unsigned int x, unsigned int y) {
     }
 }
 
-void matrix::mulRow(double a, unsigned int x) {
+void Matrix::mulRow(double a, unsigned int x) {
     for (unsigned int i=0; i<m; i++)
         (M[x][i]) *= a;
 
 }
 
-void matrix::addLinMul(double a, unsigned int x, unsigned int y) {
+void Matrix::addLinMul(double a, unsigned int x, unsigned int y) {
     if (x == y)
         return;
     for (unsigned int i=0; i<m; i++)
@@ -769,7 +765,7 @@ void matrix::addLinMul(double a, unsigned int x, unsigned int y) {
 }
 
 
-void matrix::rref() {
+void Matrix::rref() {
     unsigned int i, j;
 
     for (i = 0; i < n; i++) {
@@ -810,7 +806,7 @@ void matrix::rref() {
     }
 }
 
-void matrix::rref(vectorn &sol) {
+void Matrix::rref(VectorN &sol) {
     unsigned int i, j;
     double t;
 
@@ -858,10 +854,10 @@ void matrix::rref(vectorn &sol) {
     }
 }
 
-matrix matrix::inv() {
+Matrix Matrix::inv() {
     double t;
     unsigned int i, j;
-    matrix cpy(*this), ret(n,m);
+    Matrix cpy(*this), ret(n,m);
     ret.iden();
 
     for (i = 0; i < n; i++) {
@@ -908,7 +904,7 @@ matrix matrix::inv() {
     return ret;
 }
 
-void matrix::resz(unsigned int a, unsigned int b) {
+void Matrix::resz(unsigned int a, unsigned int b) {
     unsigned int i;
     n = a;
     m = b;
@@ -936,8 +932,8 @@ void matrix::resz(unsigned int a, unsigned int b) {
  *
  */
 
-matrix operator*(const double& d, const matrix &p) {
-    matrix R = p;
+Matrix operator*(const double& d, const Matrix &p) {
+    Matrix R = p;
     R *= d;
 
     return R;
@@ -949,9 +945,9 @@ matrix operator*(const double& d, const matrix &p) {
  *
  */
 
-vectorn LstSqApprox(double *X, double *Y, unsigned int n, unsigned int deg) {
-    vectorn sol(Y, n);
-    matrix mat(X, n, deg), matT(mat);
+VectorN LstSqApprox(double *X, double *Y, unsigned int n, unsigned int deg) {
+    VectorN sol(Y, n);
+    Matrix mat(X, n, deg), matT(mat);
 
     matT.trans();
     // cout << mat << endl << endl;

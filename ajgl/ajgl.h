@@ -6,10 +6,9 @@
 #include <GL/glut.h>
 #include <GL/glui.h> // Get rid of this later...
 
-#include "../ajutil/ajutil.h"
-
 #include "color.h"
 #include "object.h"
+#include "primitives.h"
 #include "window.h"
 
 #endif // AJGL_H

@@ -17,6 +17,9 @@ using namespace std;
 #define SEQT_COMB 2
 #define SEQT_PART 3
 
+// This uses the ... algorithm
+// able to go through all permutation iteratively
+
 // Only "understands" integers
 class sequence {
 private:
@@ -106,7 +109,7 @@ public:
 class csequence {
 private:
     char *P;// set of Possibilities
-    int *D;
+    int *D; // direction
     unsigned int *W; // Working set and Direction Set
     unsigned int n, k, it;
     int (csequence::*fn)();

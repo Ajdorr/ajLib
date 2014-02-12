@@ -1,7 +1,7 @@
 #include "object.h"
 
 void destroyObject(void* obj){
-    delete (Object*)obj;
+    // delete (Object*)obj;
 }
 
 // helper function to render and update an object and all children

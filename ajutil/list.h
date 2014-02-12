@@ -32,7 +32,8 @@ void* list_Iterate(list* /*list*/, unsigned int /*i*/);
 
 // returns the data at the current iterator and removes the entry
 // moves the iterator i places after
-// if i = 0, it wont move the iterator but the iterator will point to the next entry
+// if i = 0, it wont move the iterator
+// but the iterator will point to the next entry
 void* list_Extract(list* /*list*/);
 
 // inserts data wherever the iterator is
@@ -40,6 +41,7 @@ void* list_Extract(list* /*list*/);
 int list_Insert(list* /*list*/, void* /*data*/);
 
 #ifdef __cplusplus
+// list class for c++
 class List {
 private:
     list* l;

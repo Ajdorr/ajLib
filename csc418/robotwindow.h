@@ -4,36 +4,6 @@
 #include "ajgl/ajgl.h"
 #include "ajmath/ajmath.h"
 
-class Circ : public Object {
-protected:
-    Vector3 color; // colour
-    void render();
-    void update();
-
-public:
-    float radius; // radius
-
-    Circ(const char*, float radius,
-           Vector3 col, Vector3 p = ajMath::Zero,
-           Vector3 s = ajMath::One, Vector3 rot = ajMath::Zero);
-
-};
-
-class Rect : public Object {
-protected:
-    Vector3 color;
-    void render();
-    void update();
-
-public:
-    float sx, sy;
-
-    Rect(const char*, float sizex, float sizey,
-           Vector3 col, Vector3 p = ajMath::Zero,
-           Vector3 s = ajMath::One, Vector3 r = ajMath::Zero);
-
-};
-
 class RobotLimb :public Rect {
 private:
     Circ joint;
@@ -65,6 +35,7 @@ class RobotWindow : public Window {
 private:
     GLUI *controls;
 
+    // body parts for the Robot
     Rect body;
     Rect hips;
     RobotLimb neck;
@@ -73,8 +44,8 @@ private:
     RobotLimb lhand, rhand;
     RobotLimb lleg, rleg;
 
+    // counter to determine what time step the transformation is in
     float animateCounter;
-    // Rect rarm, rhand;
 protected:
     void update();
 public:

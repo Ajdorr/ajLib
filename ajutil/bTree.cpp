@@ -112,7 +112,8 @@ struct btn **btnSearch(struct btn **s, const void *k, unsigned int len) {
     return s;
 }
 
-int bTree_Insert(struct bTree* tree, const void *key, unsigned int l, void *data) {
+int bTree_Insert(struct bTree* tree, const void *key, unsigned int l, void *data)
+{
     struct btn **n;
     void *keycopy = malloc(l);
     memcpy(keycopy, key, l);

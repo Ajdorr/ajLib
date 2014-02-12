@@ -18,53 +18,6 @@ void quitButton(int) {
     exit(0);
 }
 
-Circ::Circ(const char* name, float rad, Vector3 col,
-     Vector3 p, Vector3 s, Vector3 r):
-    Object(name, p, s, r),
-    color(col)
-{
-    radius = rad;
-}
-
-void Circ::render() {
-    float i;
-    float inc = 2*PI/radius;
-    // float inc = 0.1;
-    glColor3f(color.x, color.y, color.z);
-    glBegin(GL_LINE_LOOP);
-    for (i = 0; i < 2*PI; i+=inc) {
-        glVertex2f(radius*cos(i), radius*sin(i));
-    }
-    glEnd();
-}
-
-void Circ::update() {
-
-}
-
-Rect::Rect(const char* name, float x, float y,
-               Vector3 col, Vector3 p, Vector3 s, Vector3 r):
-    Object(name, p, s, r),
-    color(col)
-{
-    sx = x;
-    sy = y;
-}
-
-void Rect::render() {
-    glColor3f(color.x, color.y, color.z);
-    glBegin(GL_QUADS);
-    glVertex2f(-sx/2, -sy/2);
-    glVertex2f(sx/2, -sy/2);
-    glVertex2f(sx/2, sy/2);
-    glVertex2f(-sx/2, sy/2);
-    glEnd();
-}
-
-void Rect::update() {
-
-}
-
 // Robot Arms
 
 RobotLimb::RobotLimb(const char* name, Vector3 col,

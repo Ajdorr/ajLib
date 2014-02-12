@@ -7,7 +7,8 @@ typedef struct bTree btree;
  */
 
 // returns a pointer to a new Binary Tree
-// d is how you want to destroy the data, it is called whenever a node is deleted
+// d is how you want to destroy the data, it is
+// called whenever a node is deleted
 struct bTree *new_bTree(void(*d)(void*/*data*/));
 
 // deletes a binary tree cleanly
@@ -16,16 +17,19 @@ void delete_bTree(struct bTree*);
 // insert a node with key key and data data
 // the key is copied into the data structure
 // returns 0 upon success and -1 on failure:
-// i.e there is already a node that exist with that given key or you ran out of memory
-int bTree_Insert(struct bTree*, const void* /*key*/, unsigned int /*length*/, void* /*data*/);
+// i.e there is already a node that exist with
+// that given key or you ran out of memory
+int bTree_Insert(struct bTree*, const void* /*key*/,
+                 unsigned int /*length*/, void* /*data*/);
 
 // returns 0 if nothing is found
 // must be passed the data structure you wish to search
-void *bTree_Search(struct bTree*, void* /*key*/, unsigned int /*length*/);
+void *bTree_Search(struct bTree*, const void* /*key*/, unsigned int /*length*/);
 
 // executes func in order at every entry in the tree
 // passes data as the first argument and info as the second
-void bTree_ExecAll(struct bTree*, void(*/*func*/)(void*/*data*/,void*/*info*/), void* /*info*/);
+void bTree_ExecAll(struct bTree*,
+                   void(*/*func*/)(void*/*data*/,void*/*info*/), void* /*info*/);
 
 // search for a node with key key
 // 0 upon success -1 on failure
@@ -36,7 +40,7 @@ int bTree_Delete(struct bTree*, void* /*key*/, unsigned int /*length*/);
 void* bTree_Extract(struct bTree*, void* /*key*/, unsigned int /*length*/);
 
 #ifdef __cplusplus
-
+// binary tree class for c++
 class BTree
 {
 private:

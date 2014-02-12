@@ -20,8 +20,6 @@ namespace ajMath {
     static Vector3 One = Vector3(1.0, 1.0, 1.0);
 }
 
-unsigned int factorial(unsigned int);// n! functiononly does positive integers
-
 #ifndef SWAP
 #define SWAP(a,b) a=a^b;b=b^a;a=a^b;
 #endif
@@ -40,5 +38,9 @@ unsigned int factorial(unsigned int);// n! functiononly does positive integers
 unsigned int factorial(unsigned int);// n! functiononly does positive integers
 unsigned int factorialtok(unsigned int,unsigned int);// n!/k! n > k
 unsigned int nchoosek(unsigned int, unsigned int);// n choose k function
+
+// Least Squares Approximation, takes two vectors and the degree
+// Linear Reduction
+VectorN leastSquaresApproximation(const VectorN &x, const VectorN &y);
 
 #endif // JMATH_H

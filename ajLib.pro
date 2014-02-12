@@ -18,7 +18,7 @@ SOURCES += main.cpp \
     ajutil/dlist.cpp \
     ajutil/bTree.cpp \
     ajutil/ajutil.cpp \
-    csc418/robotwindow.cpp
+    ajgl/primitives.cpp
 
 HEADERS += \
     ajlib.h \
@@ -35,5 +35,5 @@ HEADERS += \
     ajutil/dlist.h \
     ajutil/bTree.h \
     ajutil/ajutil.h \
-    csc418/robotwindow.h
+    ajgl/primitives.h
 
