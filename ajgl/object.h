@@ -5,10 +5,13 @@
 #include <GL/glut.h>
 #include "ajutil/ajutil.h"
 #include "ajmath/ajmath.h"
+#include "ajgl/material.h"
 
 /*
  *
- * Notes: Scale manipulations are applied only to the object itself
+ * Object Class
+ * Anything rendered to the window is an object and inherit from this class
+ * There are also primitives that can be used in primitives.h
  *
  */
 
@@ -25,24 +28,28 @@ private:
     BTree children;
 
 protected:
+
     virtual void update();
     virtual void render();
 
 public:
+    Material *mat;
     Vector3 pos, scale, rot;
 
     // objects at least need a name
-    Object(const char*, Vector3 p = ajMath::Zero,
-           Vector3 s = ajMath::One, Vector3 r = ajMath::Zero);
+    Object(const char*, const Vector3 &p = Vector3::Zero,
+           const Vector3 &r = Vector3::Zero, const Vector3 &s = Vector3::One);
 
     virtual ~Object();
 
     // Graphic Function
-    void renderUpdate();
-    // Rotate around a point, the point is relative to the parent
-    void rotateAround(Vector3 relativePoint, Vector3 axis, float angle);
+    void display();
+    // Rotate around a point in object space
+    void rotateAround(const Vector3 &relativePoint,
+                      const Vector3 &axis, const float angle);
 
     int attachChild(Object*);
+    void attachMaterial(Material*);
 
     // Accessor Functions
     const char* getName();

@@ -4,10 +4,12 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#include <GL/glui.h> // Get rid of this later...
+#include <GL/glui.h> // Get rid of this later..?
 
-#include "color.h"
+#include "input.h"
+#include "material.h"
 #include "object.h"
+#include "camera.h"
 #include "primitives.h"
 #include "window.h"
 

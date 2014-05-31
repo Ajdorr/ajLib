@@ -41,13 +41,13 @@ public:
     sequence();
     // if k > n for a permuatation or combination the set wont be created and
     // creation is non destructive, the parameter passed in through T is copied, not used
-    sequence(int _type, int* p, unsigned int _n, unsigned int _k);
+    sequence(int _type, const int* p, unsigned int _n, unsigned int _k);
     ~sequence();
 
     // just like the constructor, but allows for class conversion
     // type, n, k
     // returns 0 on success, and -1 if parameters are incorrect
-    int init(int, int*, unsigned int, unsigned int);
+    int init(int, const int*, unsigned int, unsigned int);
 
     // both next and prev return 1 until a full loop is made
     // when 0 is returned, the array is reset
@@ -84,13 +84,13 @@ public:
     dsequence();
     // if k > n for a permuatation or combination the set wont be created and
     // creation is non destructive, the parameter passed in through T is copied, not used
-    dsequence(int _type, double* p, unsigned int _n, unsigned int _k);
+    dsequence(int _type, const double* p, unsigned int _n, unsigned int _k);
     ~dsequence();
 
     // just like the constructor, but allows for class conversion
     // type, n, k
     // returns 0 on success, and -1 if parameters are incorrect
-    int init(int, double*, unsigned int, unsigned int);
+    int init(int, const double*, unsigned int, unsigned int);
 
     // both next and prev return 1 until a full loop is made
     // when 0 is returned, the array is reset
@@ -126,13 +126,13 @@ public:
     csequence();
     // if k > n for a permuatation or combination the set wont be created and
     // creation is non destructive, the parameter passed in through T is copied, not used
-    csequence(int _type, char* p, unsigned int _n, unsigned int _k);
+    csequence(int _type, const char* p, unsigned int _n, unsigned int _k);
     ~csequence();
 
     // just like the constructor, but allows for class conversion
     // type, n, k
     // returns 0 on success, and -1 if parameters are incorrect
-    int init(int, char*, unsigned int, unsigned int);
+    int init(int, const char*, unsigned int, unsigned int);
 
     // both next and prev return 1 until a full loop is made
     // when 0 is returned, the array is reset

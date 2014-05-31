@@ -74,7 +74,7 @@ int* countingsort(int arr[], unsigned int len, unsigned int k, unsigned int off)
 
     return ret;
 }
-
+/*
 void time_start(timer *t) {
     gettimeofday(&(t->st), NULL);
 }
@@ -90,6 +90,7 @@ void time_lap(timer *t) {
 double time_delta(timer *t) {
     return ((double)(t->fn.tv_sec - t->st.tv_sec) + (double)(t->fn.tv_usec - t->st.tv_usec)/1000000);
 }
+*/
 
 int iatoi(int *a, unsigned int sz) {
     int ret = 0;

@@ -1,22 +1,24 @@
 #include "object.h"
 
-void destroyObject(void* obj){
+void destroyObject(void*){
     // delete (Object*)obj;
 }
 
 // helper function to render and update an object and all children
 void renderAndUpdateObject(void* obj, void* inf) {
     (void)inf;
-    ((Object*)obj)->renderUpdate(); // renders self then children
+    ((Object*)obj)->display(); // renders self then children
 }
 
-Object::Object(const char* n, Vector3 p, Vector3 s, Vector3 r):
+Object::Object(const char* n, const Vector3 &p,
+               const Vector3 &r, const Vector3 &s):
     name(n),
     children(destroyObject),
     pos(p),
     scale(s),
     rot(r)
 {
+  mat = NULL;
 }
 
 
@@ -24,41 +26,46 @@ Object::~Object()
 {
 }
 
-void Object::update() {
+void Object::update() {}
+void Object::render() {}
 
-}
-
-void Object::render() {
-
-}
-
-void Object::renderUpdate(){
+void Object::display(){
     glPushMatrix();
-    this->update();
-    glTranslatef(pos.x, pos.y, pos.z);
-    glRotatef(rot.z, 0, 0, 1);
-    glRotatef(rot.y, 0, 1, 0);
-    glRotatef(rot.x, 1, 0, 0);
-    glScalef(scale.x, scale.y, scale.z);
 
+    glTranslatef(pos[0], pos[1], pos[2]);
+    glRotatef(rot[2], 0, 0, 1);
+    glRotatef(rot[1], 0, 1, 0);
+    glRotatef(rot[0], 1, 0, 0);
+    glScalef(scale[0], scale[1], scale[2]);
+
+    if (mat != NULL) mat->applyMaterial();
+
+    this->update();
     this->render(); // render self
 
     children.execAll(renderAndUpdateObject, NULL);
+
     glPopMatrix();
 }
 
 
-void Object::rotateAround(Vector3 point, Vector3 axis, float angle)
+void Object::rotateAround(const Vector3 &point, const Vector3 &axis,
+                          const float angle)
 {
-    glTranslatef(point.x, point.y, point.z);
-    glRotatef(angle, axis.x, axis.y, axis.z);
-    glTranslatef(-point.x, -point.y, -point.z);
+    glTranslatef(point.x(), point.y(), point.z());
+    glRotatef(angle, axis.x(), axis.y(), axis.z());
+    glTranslatef(-point.x(), -point.y(), -point.z());
 }
 
 int Object::attachChild(Object* obj) {
     return children.insert(obj->name.c_str(),
                            obj->name.length(),
                            obj);
+}
+
+
+void Object::attachMaterial(Material* m) {
+    mat = m;
 }
 
 

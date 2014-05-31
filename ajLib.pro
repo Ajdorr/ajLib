@@ -6,9 +6,8 @@ CONFIG -= qt
 LIBS += -lGL -lGLU -lglut -lglui
 
 SOURCES += main.cpp \
-    ajgl/window.cpp \
     ajgl/object.cpp \
-    ajgl/color.cpp \
+    ajgl/window.cpp \
     ajmath/sequence.cpp \
     ajmath/matrix4.cpp \
     ajmath/matrix3.cpp \
@@ -18,13 +17,17 @@ SOURCES += main.cpp \
     ajutil/dlist.cpp \
     ajutil/bTree.cpp \
     ajutil/ajutil.cpp \
-    ajgl/primitives.cpp
+    ajgl/primitives.cpp \
+    ajgl/material.cpp \
+    ajutil/idtable.cpp \
+    ajgl/scene.cpp \
+    ajutil/kdtree.cpp \
+    ajgl/camera.cpp
 
 HEADERS += \
     ajlib.h \
     ajgl/window.h \
     ajgl/object.h \
-    ajgl/color.h \
     ajgl/ajgl.h \
     ajmath/sequence.h \
     ajmath/matrix4.h \
@@ -35,5 +38,10 @@ HEADERS += \
     ajutil/dlist.h \
     ajutil/bTree.h \
     ajutil/ajutil.h \
-    ajgl/primitives.h
+    ajgl/primitives.h \
+    ajgl/material.h \
+    ajutil/idtable.h \
+    ajgl/scene.h \
+    ajutil/kdtree.h \
+    ajgl/camera.h
 

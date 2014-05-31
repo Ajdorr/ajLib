@@ -3,11 +3,13 @@
 #include <sys/time.h>
 #include "bTree.h"
 #include "list.h"
+#include "idtable.h"
 
 #ifndef SWAP
 #define SWAP(a,b) a=a^b;b=b^a;a=a^b;
 #endif
 
+/*
 typedef struct Timer {
     struct timeval st, fn;
 } timer;
@@ -17,6 +19,7 @@ void time_start(timer*);// saves to start
 void time_stop(timer*);// saves to finish
 void time_lap(timer*);// pushes finish to start and then saves, must call after stop
 double time_delta(timer*);//
+*/
 
 // arr is the array
 // st is the first address that can be accessed

@@ -4,7 +4,7 @@
 struct ln {
     void *data;
 
-    struct ln* n;
+    struct ln *n, *p;
 };
 
 typedef struct dlistStruct {

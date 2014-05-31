@@ -42,7 +42,7 @@ void delete_btn(struct btn *n, void(*del)(void*)) {
         return;
     }
 
-    del(n->data);
+    if (del != NULL) del(n->data);
     free(n->key);
     free(n);
 }
@@ -141,6 +141,7 @@ void *bTree_Search(struct bTree *tree, const void *key, unsigned int len) {
 	else {
 		return((*n)->data);
 	}
+    void pressKey(char c);
 }
 
 
@@ -184,6 +185,12 @@ int bTree_Delete(struct bTree* tree, void *key, unsigned int l)  {
 
 
 	return(0);
+}
+
+void bTree_DeleteAll(struct bTree *t)
+{
+  btn_deleteSub(t->head, t->dest);
+  t->head = NULL;
 }
 
 

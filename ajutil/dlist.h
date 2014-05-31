@@ -3,6 +3,8 @@
 
 // WIP
 // TODO make this a double linked dlist!
+// need to design...
+// has no scope, what makes this better that the normally linked list
 
 typedef struct dlistStruct dlist;
 
@@ -29,14 +31,26 @@ int dlist_Enqueue(dlist* /*dlist*/, void* /*data*/);
 
 // moves the iterator i times
 // then returns the data that is at that node
-void* dlist_Iterate(dlist* /*dlist*/, unsigned int /*i*/);
+void* dlist_Iterate(dlist* /*dlist*/, int /*i*/);
 
 // returns the data at the current iterator and removes the entry
 // moves the iterator i places after
-// if i = 0, it wont move the iterator but the iterator will point to the next entry
+// if i = 0, it wont move the iterator but the iterator will
+// point to the next entry
 void* dlist_Extract(dlist* /*dlist*/);
 
 // inserts data wherever the iterator is and then moves the iterator i times
 int dlist_Insert(dlist* /*dlist*/, void* /*data*/);
+
+#ifdef __cplusplus
+
+class DList {
+private:
+    dlist *dl;
+public:
+
+};
+
+#endif
 
 #endif // LIST_H

@@ -159,7 +159,7 @@ sequence::sequence() {
     k = 0;
 }
 
-sequence::sequence(int _type, int* p, unsigned int _n, unsigned int _k) {
+sequence::sequence(int _type, const int* p, unsigned int _n, unsigned int _k) {
     P = NULL;
     W = NULL;
     D = NULL;
@@ -176,7 +176,7 @@ sequence::~sequence() {
         delete[] D;
 }
 
-int sequence::init(int _type, int* p, unsigned int _n, unsigned int _k) {
+int sequence::init(int _type, const int* p, unsigned int _n, unsigned int _k) {
     unsigned int i;
     if (P) {
         delete[] P;
@@ -446,7 +446,7 @@ dsequence::dsequence() {
     k = 0;
 }
 
-dsequence::dsequence(int _type, double* p, unsigned int _n, unsigned int _k) {
+dsequence::dsequence(int _type, const double* p, unsigned int _n, unsigned int _k) {
     P = NULL;
     W = NULL;
     D = NULL;
@@ -463,7 +463,7 @@ dsequence::~dsequence() {
         delete[] D;
 }
 
-int dsequence::init(int _type, double* p, unsigned int _n, unsigned int _k) {
+int dsequence::init(int _type, const double* p, unsigned int _n, unsigned int _k) {
     unsigned int i;
     if (P) {
         delete[] P;
@@ -724,7 +724,7 @@ csequence::csequence() {
     k = 0;
 }
 
-csequence::csequence(int _type, char* p, unsigned int _n, unsigned int _k) {
+csequence::csequence(int _type, const char* p, unsigned int _n, unsigned int _k) {
     P = NULL;
     W = NULL;
     D = NULL;
@@ -741,7 +741,7 @@ csequence::~csequence() {
         delete[] D;
 }
 
-int csequence::init(int _type, char* p, unsigned int _n, unsigned int _k) {
+int csequence::init(int _type, const char* p, unsigned int _n, unsigned int _k) {
     unsigned int i;
     if (P) {
         delete[] P;

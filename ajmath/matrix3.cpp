@@ -1,6 +1,5 @@
 #include <math.h>
 #include "matrix3.h"
-#include "ajmath.h"
 
 /*
  *
@@ -10,166 +9,176 @@
  *
  */
 
-Vector3::Vector3() {
-    x = 0;
-    y = 0;
-    z = 0;
-}
+// static Member Variables
 
-Vector3::Vector3(const Vector3 &v) {
-    this->x = v.x;
-    this->y = v.y;
-    this->z = v.z;
+Vector3 Vector3::Zero = Vector3(0,0,0);
+Vector3 Vector3::One = Vector3(1,1,1);
+
+Vector3::Vector3(const Vector3 &vec) {
+  v[0] = vec.v[0];
+  v[1] = vec.v[1];
+  v[2] = vec.v[2];
 }
 
 Vector3::Vector3(float nx, float ny, float nz) {
-    x = nx;
-    y = ny;
-    z = nz;
+  v[0] = nx;
+  v[1] = ny;
+  v[2] = nz;
 }
 
-Vector3& Vector3::operator=(const Vector3 &v) {
-    this->x = v.x;
-    this->y = v.y;
-    this->z = v.z;
+Vector3& Vector3::operator=(const Vector3 &vec) {
+  v[0] = vec.v[0];
+  v[1] = vec.v[1];
+  v[2] = vec.v[2];
 
-    return *this;
+  return *this;
 }
 
-Vector3 Vector3::operator+(const Vector3 &v) {
-    Vector3 temp(x+v.x, y+v.y, z+v.z);
+Vector3 Vector3::operator+(const Vector3 &vec) {
+  Vector3 ret(vec.v[0] + v[0], vec.v[1] + v[1], vec.v[2] + v[2]);
 
-    return temp;
+  return ret;
 }
 
-Vector3 Vector3::operator-(const Vector3 &v) {
-    Vector3 temp(x-v.x,y-v.y,z-v.z);
-    return temp;
+Vector3 Vector3::operator-(const Vector3 &vec) {
+  Vector3 ret(v[0] - vec.v[0], v[1] - vec.v[1], v[2] - vec.v[2]);
+  return ret;
 }
 
-Vector3 Vector3::operator%(const Vector3 &v){
-    Vector3 temp((y*v.z) - (z*v.y), (z*v.x) - (x*v.z), (x*v.y)-(y*v.x));
+Vector3 Vector3::operator^(const Vector3 &vec){
+  Vector3 ret;
 
-    return temp;
+  ret.v[0] = v[1]*vec.v[2] - v[2]*vec.v[1];
+  ret.v[1] = v[2]*vec.v[0] - v[0]*vec.v[2];
+  ret.v[2] = v[0]*vec.v[1] - v[1]*vec.v[0];
+
+  return ret;
 }
 
-float Vector3::operator*(const Vector3 &v) {
-    return v.x*x + v.y*y + v.z*z;
+float Vector3::operator*(const Vector3 &vec) {
+  return v[0]*vec.v[0] + v[1]*vec.v[1] + v[2]*vec.v[2];
 }
 
-Vector3& Vector3::operator+=(const Vector3 &v) {
-    this->x = this->x + v.x;
-    this->y = this->y + v.y;
-    this->z = this->z + v.z;
+Vector3& Vector3::operator+=(const Vector3 &vec) {
+  v[0] += vec.v[0];
+  v[1] += vec.v[1];
+  v[2] += vec.v[2];
 
-    return *this;
+  return *this;
 }
 
-Vector3& Vector3::operator-=(const Vector3 &v) {
-    this->x = this->x - v.x;
-    this->y = this->y - v.y;
-    this->z = this->z - v.z;
+Vector3& Vector3::operator-=(const Vector3 &vec) {
+  v[0] -= vec.v[0];
+  v[1] -= vec.v[1];
+  v[2] -= vec.v[2];
 
-    return *this;
+  return *this;
 
 }
 
-Vector3& Vector3::operator%=(const Vector3 &v){
-    float _x, _y, _z;
+Vector3& Vector3::operator^=(const Vector3 &vec){
+  float _x, _y, _z;
 
-    _x = (this->y)*(v.z) - (this->z)*(v.y);
-    _y = (this->z)*(v.x) - (this->x)*(v.z);
-    _z = (this->x)*(v.y) - (this->y)*(v.x);
+  _x = v[1]*vec.v[2] - v[2]*vec.v[1];
+  _y = v[2]*vec.v[0] - v[0]*vec.v[2];
+  _z = v[0]*vec.v[1] - v[1]*vec.v[0];
 
-    x = _x;
-    y = _y;
-    z = _z;
+  v[0] = _x;
+  v[1] = _y;
+  v[2] = _z;
 
-    return *this;
-}
-
-Vector3& Vector3::operator*=(const Matrix3 &A) {
-    float _x, _y, _z;
-
-    _x = x*A.M[0][0] + y*A.M[0][1] + z*A.M[0][2];
-    _y = x*A.M[1][0] + y*A.M[1][1] + z*A.M[1][2];
-    _z = x*A.M[2][0] + y*A.M[2][1] + z*A.M[2][2];
-
-    x = _x;
-    y = _y;
-    z = _z;
-
-    return *this;
+  return *this;
 }
 
 Vector3 Vector3::operator*(const float a){
-    Vector3 t(x*a, y*a, z*a);
+  Vector3 t(v[0]*a, v[1]*a, v[2]*a);
 
-    return t;
+  return t;
 }
 
 Vector3 Vector3::operator/(const float a) {
-    Vector3 temp(x/a, y/a,z/a);
+  Vector3 temp(v[0]/a, v[1]/a, v[2]/a);
 
-    return temp;
+  return temp;
 }
 
 Vector3& Vector3::operator*=(const float a){
-    x *= a;
-    y *= a;
-    z *= a;
+  v[0] *= a;
+  v[1] *= a;
+  v[2] *= a;
 
-    return *this;
+  return *this;
 }
 
 Vector3& Vector3::operator/=(const float a){
-    *this *= 1/a;
+  float d = 1/a;
+  v[0] *= d;
+  v[1] *= d;
+  v[2] *= d;
 
-    return *this;
+  return *this;
 }
 
-std::ostream& operator<<(std::ostream& os, const Vector3 &v) {
-    os << "<" << v.x << ", " << v.y << ", " << v.z << ">";
-    return os;
+std::ostream& operator<<(std::ostream& os, const Vector3 &vec) {
+  os << "<" << vec.v[0] << ", " << vec.v[1] << ", " << vec.v[2] << ">";
+  return os;
 }
 
-bool Vector3::operator!=(const Vector3 &v) {
-        return ( (v.x != this->x) || (v.y != this->y) || (v.z != this->z));
+bool Vector3::operator!=(const Vector3 &vec) {
+  return (vec.v[0] != v[0]) ||
+      (vec.v[1] != v[1]) ||
+      (vec.v[2] != v[2]);
 }
 
-bool Vector3::operator==(const Vector3 &v) {
-        return( (v.x == this->x) && (v.y == this->y) && (v.z == this->z));
+bool Vector3::operator==(const Vector3 &vec) {
+  return (vec.v[0] == v[0]) &&
+      (vec.v[1] == v[1]) &&
+      (vec.v[2] == v[2]);
 }
 
+float& Vector3::operator[](int i) { return v[i]; }
 
-Vector3 Vector3::Unit() {
-    Vector3 temp;
-    float a = (this->Mag());
-    if (a == 0)
-        return temp;
-    a = 1/a;
+float Vector3::x() const { return v[0]; }
+float Vector3::y() const { return v[1]; }
+float Vector3::z() const { return v[2]; }
 
-    temp.x = x*a;
-    temp.y = y*a;
-    temp.z = z*a;
+Vector3 Vector3::unit() {
+  Vector3 temp;
+  float a = (this->mag());
+  if (a == 0) return temp;
+  a = 1/a;
 
-    return temp;
+  temp.v[0] = v[0]*a;
+  temp.v[1] = v[1]*a;
+  temp.v[2] = v[2]*a;
+
+  return temp;
 }
 
-float Vector3::Mag(){
-        return sqrt(pow(x,2) + pow(y,2) + pow(z,2));
+void Vector3::setUnit()
+{
+  float a = mag();
+  if (a == 0) return;
+  a = 1/a;
+
+  v[0] *= a;
+  v[1] *= a;
+  v[2] *= a;
 }
 
-void Vector3::Zero() {
-        this->x = 0;
-        this->y = 0;
-        this->z = 0;
+float Vector3::mag(){
+  // fix this
+  return sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
 }
 
-Vector3 operator*(const float &a, const Vector3 &v) {
-    Vector3 t(v);
-    t*=a;
-    return t;
+float Vector3::mag2(){
+  // fix this
+  return v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
+}
+
+Vector3 operator*(const float &a, const Vector3 &vec) {
+  Vector3 ret(a*vec.x(), a*vec.y(), a*vec.z());
+  return ret;
 }
 
 
@@ -182,241 +191,293 @@ Vector3 operator*(const float &a, const Vector3 &v) {
  */
 
 // Constructors
-Matrix3::Matrix3() {
+Matrix3::Matrix3(const float a)
+{
+  M[0] = a; M[1] = 0; M[2] = 0;
+  M[3] = 0; M[4] = a; M[5] = 0;
+  M[6] = 0; M[7] = 0; M[8] = a;
 }
 
-Matrix3::Matrix3(const float a) {
-    for (unsigned int i= 0; i < 3; i++) {
-        for (unsigned int j= 0; j < 3; j++) {
-            if (i == j)
-                M[i][j] = a;
-            else
-                M[i][j] = 0;
-        }
-    }
+Matrix3::Matrix3(const Matrix3 &A)
+{
+  M[0] = A.M[0]; M[1] = A.M[1]; M[2] = A.M[2];
+  M[3] = A.M[3]; M[4] = A.M[4]; M[5] = A.M[5];
+  M[6] = A.M[6]; M[7] = A.M[7]; M[8] = A.M[8];
 }
 
-Matrix3::Matrix3(const Matrix3 &A) {
-    for (unsigned int i= 0; i < 3; i++) {
-        for (unsigned int j= 0; j < 3; j++) {
-            M[i][j] = A.M[i][j];
-        }
-    }
+Matrix3::Matrix3(const float *d)
+{
+  M[0] = d[0]; M[1] = d[1]; M[2] = d[2];
+  M[3] = d[3]; M[4] = d[4]; M[5] = d[5];
+  M[6] = d[6]; M[7] = d[7]; M[8] = d[8];
 }
 
-Matrix3::Matrix3(float d[][3]){
-    for (unsigned int i= 0; i < 3; i++) {
-        for (unsigned int j= 0; j < 3; j++) {
-            M[i][j] = d[i][j];
-        }
-    }
+Matrix3::Matrix3(const float **d)
+{
+  M[0] = d[0][0]; M[1] = d[0][1]; M[2] = d[0][2];
+  M[3] = d[1][0]; M[4] = d[1][1]; M[5] = d[1][2];
+  M[6] = d[2][0]; M[7] = d[2][1]; M[8] = d[2][2];
 }
 
-Matrix3::Matrix3(float **d){
-    for (unsigned int i= 0; i < 3; i++) {
-        for (unsigned int j= 0; j < 3; j++) {
-            M[i][j] = d[i][j];
-        }
-    }
+Matrix3::Matrix3(const float d[][3])
+{
+  M[0] = d[0][0]; M[1] = d[0][1]; M[2] = d[0][2];
+  M[3] = d[1][0]; M[4] = d[1][1]; M[5] = d[1][2];
+  M[6] = d[2][0]; M[7] = d[2][1]; M[8] = d[2][2];
 }
 
-void Matrix3::init(float d[][3]) {
-    for (unsigned int i= 0; i < 3; i++) {
-        for (unsigned int j= 0; j < 3; j++) {
-            M[i][j] = d[i][j];
-        }
-    }
+// Assignment Operators
+Matrix3& Matrix3::operator=(const float *d)
+{
+  M[0] = d[0]; M[1] = d[1]; M[2] = d[2];
+  M[3] = d[3]; M[4] = d[4]; M[5] = d[5];
+  M[6] = d[6]; M[7] = d[7]; M[8] = d[8];
+
+  return *this;
 }
 
-void Matrix3::init(float **d) {
-    for (unsigned int i= 0; i < 3; i++) {
-        for (unsigned int j= 0; j < 3; j++) {
-            M[i][j] = d[i][j];
-        }
-    }
+Matrix3& Matrix3::operator=(const float **d)
+{
+  M[0] = d[0][0]; M[1] = d[0][1]; M[2] = d[0][2];
+  M[3] = d[1][0]; M[4] = d[1][1]; M[5] = d[1][2];
+  M[6] = d[2][0]; M[7] = d[2][1]; M[8] = d[2][2];
+
+  return *this;
 }
 
-Matrix3& Matrix3::operator=(const float d) {
-    for (unsigned int i= 0; i < 3; i++) {
-        for (unsigned int j= 0; j < 3; j++) {
-            M[i][j] = d;
-        }
-    }
-    return *this;
+Matrix3& Matrix3::operator=(const float d[][3])
+{
+  M[0] = d[0][0]; M[1] = d[0][1]; M[2] = d[0][2];
+  M[3] = d[1][0]; M[4] = d[1][1]; M[5] = d[1][2];
+  M[6] = d[2][0]; M[7] = d[2][1]; M[8] = d[2][2];
+
+  return *this;
+}
+
+Matrix3& Matrix3::operator=(const float d)
+{
+  M[0] = d; M[1] = 0; M[2] = 0;
+  M[3] = 0; M[4] = d; M[5] = 0;
+  M[6] = 0; M[7] = 0; M[8] = d;
+
+  return *this;
 }
 
 Matrix3& Matrix3::operator=(const Matrix3 &A){
-    if (&A == this)
-        return *this;
-    for (unsigned int i= 0; i < 3; i++) {
-        for (unsigned int j= 0; j < 3; j++) {
-            M[i][j] = A.M[i][j];
-        }
-    }
-    return *this;
+  M[0] = A.M[0]; M[1] = A.M[1]; M[2] = A.M[2];
+  M[3] = A.M[3]; M[4] = A.M[4]; M[5] = A.M[5];
+  M[6] = A.M[6]; M[7] = A.M[7]; M[8] = A.M[8];
+
+  return *this;
 }
 
+// Arithmetic Operators
 Matrix3 Matrix3::operator+(const Matrix3 &A) {
-    Matrix3 ret;
-    for (unsigned int i= 0; i < 3; i++) {
-        for (unsigned int j= 0; j < 3; j++) {
-            ret.M[i][j] = M[i][j] + A.M[i][j];
-        }
-    }
-    return ret;
+  Matrix3 ret;
+
+  ret.M[0] = M[0] + A.M[0];
+  ret.M[1] = M[1] + A.M[1];
+  ret.M[2] = M[2] + A.M[2];
+
+  ret.M[3] = M[3] + A.M[3];
+  ret.M[4] = M[4] + A.M[4];
+  ret.M[5] = M[5] + A.M[5];
+
+  ret.M[6] = M[6] + A.M[6];
+  ret.M[7] = M[7] + A.M[7];
+  ret.M[8] = M[8] + A.M[8];
+
+  return ret;
 }
 
 Matrix3 Matrix3::operator-(const Matrix3 &A) {
-    Matrix3 ret;
-    for (unsigned int i= 0; i < 3; i++) {
-        for (unsigned int j= 0; j < 3; j++) {
-            ret.M[i][j] = M[i][j] - A.M[i][j];
-        }
-    }
-    return ret;
+  Matrix3 ret;
+
+  ret.M[0] = M[0] - A.M[0];
+  ret.M[1] = M[1] - A.M[1];
+  ret.M[2] = M[2] - A.M[2];
+
+  ret.M[3] = M[3] - A.M[3];
+  ret.M[4] = M[4] - A.M[4];
+  ret.M[5] = M[5] - A.M[5];
+
+  ret.M[6] = M[6] - A.M[6];
+  ret.M[7] = M[7] - A.M[7];
+  ret.M[8] = M[8] - A.M[8];
+
+  return ret;
 }
 
-Matrix3 Matrix3::operator*(const float d) {
-    Matrix3 ret;
-    for (unsigned int i= 0; i < 3; i++)
-        for (unsigned int j= 0; j < 3; j++)
-            ret.M[i][j] = M[i][j] * d;
-    return ret;
+Matrix3 Matrix3::operator*(const float d) const
+{
+  Matrix3 ret;
+
+  ret.M[0] = M[0] * d;
+  ret.M[1] = M[1] * d;
+  ret.M[2] = M[2] * d;
+
+  ret.M[3] = M[3] * d;
+  ret.M[4] = M[4] * d;
+  ret.M[5] = M[5] * d;
+
+  ret.M[6] = M[6] * d;
+  ret.M[7] = M[7] * d;
+  ret.M[8] = M[8] * d;
+
+  return ret;
 }
 
-Matrix3 Matrix3::operator/(const float d) {
-    float a = 1/d;
-    Matrix3 ret;
-    for (unsigned int i= 0; i < 3; i++)
-        for (unsigned int j= 0; j < 3; j++)
-            ret.M[i][j] = M[i][j] * a;
-    return ret;
+Matrix3 Matrix3::operator/(const float a) {
+  Matrix3 ret;
+  float d = 1/a;
+
+  ret.M[0] = M[0] * d;
+  ret.M[1] = M[1] * d;
+  ret.M[2] = M[2] * d;
+
+  ret.M[3] = M[3] * d;
+  ret.M[4] = M[4] * d;
+  ret.M[5] = M[5] * d;
+
+  ret.M[6] = M[6] * d;
+  ret.M[7] = M[7] * d;
+  ret.M[8] = M[8] * d;
+
+  return ret;
 }
 
 
 Matrix3 Matrix3::operator*(const Matrix3 &A) {
-    unsigned int i, j;
-    Matrix3 ret;
-    for (i= 0; i < 3; i++) {
-        for (j = 0; j < 3; j++) {
-            ret.M[i][j] = (M[i][0])*(A.M[0][j]);
-            ret.M[i][j] += (M[i][1])*(A.M[1][j]);
-            ret.M[i][j] += (M[i][2])*(A.M[2][j]);
-        }
-    }
+  Matrix3 ret;
 
-    return ret;
+  ret.M[0] = M[0] * A.M[0] + M[3] * A.M[1] + M[6] * A.M[2];
+  ret.M[1] = M[1] * A.M[0] + M[4] * A.M[1] + M[7] * A.M[2];
+  ret.M[2] = M[2] * A.M[0] + M[5] * A.M[1] + M[8] * A.M[2];
+
+  ret.M[3] = M[0] * A.M[3] + M[3] * A.M[4] + M[6] * A.M[5];
+  ret.M[4] = M[1] * A.M[3] + M[4] * A.M[4] + M[7] * A.M[5];
+  ret.M[5] = M[2] * A.M[3] + M[5] * A.M[4] + M[8] * A.M[5];
+
+  ret.M[6] = M[0] * A.M[6] + M[3] * A.M[7] + M[6] * A.M[8];
+  ret.M[7] = M[1] * A.M[6] + M[4] * A.M[7] + M[7] * A.M[8];
+  ret.M[8] = M[2] * A.M[6] + M[5] * A.M[7] + M[8] * A.M[8];
+
+  return ret;
 }
 
-Vector3 Matrix3::operator*(const Vector3 &v) {
-    Vector3 ret;
+Vector3 Matrix3::operator*(const Vector3 &vec) {
+  Vector3 ret(vec.x()*M[0] + vec.y()*M[3] + vec.z()*M[6],
+      vec.x()*M[1] + vec.y()*M[4] + vec.z()*M[7],
+      vec.x()*M[2] + vec.y()*M[5] + vec.z()*M[8] );
 
-    ret.x = v.x*M[0][0] + v.y*M[0][1] + v.z*M[0][2];
-    ret.y = v.x*M[1][0] + v.y*M[1][1] + v.z*M[1][2];
-    ret.z = v.x*M[2][0] + v.y*M[2][1] + v.z*M[2][2];
-
-    return ret;
+  return ret;
 }
 
 // Compound Operators
 Matrix3& Matrix3::operator+=(const Matrix3 &A) {
-    for (unsigned int i= 0; i < 9; i++)
-        M[i/3][i%3] += A.M[i/3][i%3];
+  M[0] += A.M[0]; M[3] += A.M[3]; M[6] += A.M[6];
+  M[1] += A.M[1]; M[4] += A.M[4]; M[7] += A.M[7];
+  M[2] += A.M[2]; M[5] += A.M[5]; M[8] += A.M[8];
 
-    return *this;
+  return *this;
 }
 
 Matrix3& Matrix3::operator-=(const Matrix3 &A) {
-    for (unsigned int i= 0; i < 9; i++)
-        M[i/3][i%3] -= A.M[i/3][i%3];
+  M[0] -= A.M[0]; M[3] -= A.M[3]; M[6] -= A.M[6];
+  M[1] -= A.M[1]; M[4] -= A.M[4]; M[7] -= A.M[7];
+  M[2] -= A.M[2]; M[5] -= A.M[5]; M[8] -= A.M[8];
 
-    return *this;
+  return *this;
 }
 
 Matrix3& Matrix3::operator*=(const float d) {
-    for (unsigned int i= 0; i < 9; i++)
-        M[i/3][i%3] *= d;
+  M[0] *= d; M[3] *= d; M[6] *= d;
+  M[1] *= d; M[4] *= d; M[7] *= d;
+  M[2] *= d; M[5] *= d; M[8] *= d;
 
-    return *this;
+  return *this;
 }
 
-Matrix3& Matrix3::operator*=(const Matrix3 &A) {
-    unsigned int i, j;
-    Matrix3 cpy(*this);
-    for (i= 0; i < 3; i++) {
-        for (j = 0; j < 3; j++) {
-            M[i][j] = (cpy.M[i][0])*(A.M[0][j]);
-            M[i][j] += (cpy.M[i][1])*(A.M[1][j]);
-            M[i][j] += (cpy.M[i][2])*(A.M[2][j]);
-        }
-    }
-    return *this;
+Matrix3& Matrix3::operator*=(const Matrix3 &A)
+{
+  Matrix3 T(*this);
+
+  M[0] = T.M[0]*A.M[0] + T.M[3]*A.M[1] + T.M[6]*A.M[2];
+  M[1] = T.M[1]*A.M[0] + T.M[4]*A.M[1] + T.M[7]*A.M[2];
+  M[2] = T.M[2]*A.M[0] + T.M[5]*A.M[1] + T.M[8]*A.M[2];
+
+  M[3] = T.M[0]*A.M[3] + T.M[3]*A.M[4] + T.M[6]*A.M[5];
+  M[4] = T.M[1]*A.M[3] + T.M[4]*A.M[4] + T.M[7]*A.M[5];
+  M[5] = T.M[2]*A.M[3] + T.M[5]*A.M[4] + T.M[8]*A.M[5];
+
+  M[6] = T.M[0]*A.M[6] + T.M[3]*A.M[7] + T.M[6]*A.M[8];
+  M[7] = T.M[1]*A.M[6] + T.M[4]*A.M[7] + T.M[7]*A.M[8];
+  M[8] = T.M[2]*A.M[6] + T.M[5]*A.M[7] + T.M[8]*A.M[8];
+
+  return *this;
 }
 
 // Stream Operators
-std::ostream& operator<<(std::ostream &os, const Matrix3 &A) {
-    os << "[ " << A.M[0][0] << " " << A.M[0][1] << " " << A.M[0][2]  << " ]" << endl;
-    os << "[ " << A.M[1][0] << " " << A.M[1][1] << " " << A.M[1][2]  << " ]" << endl;
-    os << "[ " << A.M[2][0] << " " << A.M[2][1] << " " << A.M[2][2]  << " ]";
+std::ostream& operator<<(std::ostream &os, const Matrix3 &A)
+{
 
-    return os;
+  os << "[ " << A.M[0] << " " << A.M[3] << " " << A.M[6] << std::endl;
+  os << "[ " << A.M[1] << " " << A.M[4] << " " << A.M[7] << std::endl;
+  os << "[ " << A.M[2] << " " << A.M[5] << " " << A.M[8];
+
+  return os;
 }
 
 // Accessor Function
-float* Matrix3::operator[](unsigned int x) {
-    return M[x];
+float& Matrix3::operator[](unsigned int x) {
+  return M[x];
 }
 
 // Misc Operations
 void Matrix3::trans() {
-    float t;
+  float a, b, c;
 
-    SWAPT(M[0][1], M[1][0], t);
-    SWAPT(M[0][2], M[2][0], t);
-    SWAPT(M[1][2], M[2][1], t);
+  a = M[1]; b = M[2]; c = M[5];
+  M[1] = M[3]; M[2] = M[6]; M[5] = M[7];
+  M[3] = a; M[6] = b; M[7] = c;
 }
 
 void Matrix3::iden(){
-    for (unsigned int i= 0; i < 9; i++) {
-        if (i%3 == i/3)
-            M[i/3][i%3] = 1;
-        else
-            M[i/3][i%3] = 0;
-    }
+  M[0] = 1; M[1] = 0; M[2] = 0;
+  M[3] = 0; M[4] = 1; M[5] = 0;
+  M[6] = 0; M[7] = 0; M[8] = 1;
 }
 
 void Matrix3::zero() {
-    for (unsigned int i = 0; i < 9; i++)
-        M[i/3][i%3] = 0;
+  M[0] = 0; M[1] = 0; M[2] = 0;
+  M[3] = 0; M[4] = 0; M[5] = 0;
+  M[6] = 0; M[7] = 0; M[8] = 0;
 }
 
 float Matrix3::det(){
-    float ret = M[0][0]*((M[1][1] * M[2][2]) - (M[1][2]*M[2][1]) );
-    ret -= M[1][0]*( (M[0][1]*M[2][2]) - (M[2][1]*M[0][2]) );
-    ret += M[2][0]*( (M[0][1]*M[1][2]) - (M[1][1]*M[0][2]) );
-    return ret;
+  return ( M[0]*(M[4]*M[8] - M[5]*M[7]) -
+      M[1]*(M[1]*M[8] - M[2]*M[7]) +
+      M[2]*(M[1]*M[5] - M[2]*M[4]) );
 }
 
-Matrix3 Matrix3::inv() {
-    Matrix3 inv;
+Matrix3 Matrix3::invd() {
+  Matrix3 inv;
 
-    inv.M[0][0] = M[1][1]*M[2][2] - M[1][2]*M[2][1];
-    inv.M[0][1] = M[0][2]*M[2][1] - M[0][1]*M[2][2];
-    inv.M[0][2] = M[0][1]*M[1][2] - M[0][2]*M[1][1];
+  inv.M[0] = M[4]*M[8] - M[5]*M[7];
+  inv.M[3] = M[5]*M[6] - M[3]*M[8];
+  inv.M[6] = M[3]*M[7] - M[4]*M[6];
 
-    inv.M[1][0] = M[1][2]*M[2][0] - M[1][0]*M[2][2];
-    inv.M[1][1] = M[0][0]*M[2][2] - M[0][2]*M[2][0];
-    inv.M[1][2] = M[0][2]*M[1][0] - M[0][0]*M[1][2];
+  inv.M[1] = M[2]*M[7] - M[1]*M[8];
+  inv.M[4] = M[0]*M[8] - M[2]*M[6];
+  inv.M[7] = M[1]*M[6] - M[0]*M[7];
 
-    inv.M[2][0] = M[1][0]*M[2][1] - M[1][1]*M[2][0];
-    inv.M[2][1] = M[0][1]*M[2][0] - M[0][0]*M[2][1];
-    inv.M[2][2] = M[0][0]*M[1][1] - M[0][1]*M[1][0];
+  inv.M[2] = M[1]*M[5] - M[2]*M[4];
+  inv.M[5] = M[2]*M[3] - M[0]*M[5];
+  inv.M[8] = M[0]*M[4] - M[1]*M[3];
 
-    return inv;
+  return inv;
 }
 
 Matrix3 operator*(const float &d, const Matrix3 &A) {
-    Matrix3 ret = A;
-
-    return ret*d;
+  return A*d;
 }

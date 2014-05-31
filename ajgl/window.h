@@ -10,50 +10,28 @@
 #include <GL/glut.h>
 #include <GL/glui.h>
 
-#include "../ajutil/ajutil.h"
-#include "object.h"
+#include "ajutil/ajutil.h"
+#include "ajgl/object.h"
+#include "ajgl/scene.h"
 
-// TODO figure out cross window communication
 // TODO introduce "enable" feature? Window only renders and does not call updates
 
-#define WINDOW_MAX_WINDOWS 8
-
-
-class Window
+namespace Input
 {
-private:
-    int px, py; // position
-    int sx, sy; // size
-    int id; // id
-    std::string name; // name of the window
+  int getKey(unsigned char);
+  int getKeyUp(unsigned char);
+  int getKeyDown(unsigned char);
+}
 
-protected:
-    BTree objlist;
+int windowInit(int argc, char** argv, const char* nm);
+void windowSetScene(Scene *s);
+Scene* windowGetScene();
+void windowMainLoop();
+// int attachObject(Object* obj);
+int windowGetId();
 
-    // called before rendering and updating objects
-    // called once per frame
-    virtual void update();
-
-public:
-    // static functions
-    static void initWindows(int argc, char** argv);
-    // updates all windows when glut is idle
-    static void setIdleUpdate(int);
-
-    Window(int posx, int posy, int sizex, int sizey, const char* name);
-    ~Window();
-
-    // Class Functions
-    void resize(int w, int h);
-    void display();
-    void start();
-
-    int attachObject(Object*);
-    int getId();
-};
-
-extern int idleUpdate; // initially set to false
-extern Window *windowList[WINDOW_MAX_WINDOWS];
-
+// WIP
+void windowLimitFramerate(int);
+int windowloadScene(const char*);
 
 #endif // WINDOW_H

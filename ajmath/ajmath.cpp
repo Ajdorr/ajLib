@@ -34,3 +34,46 @@ unsigned int factorialtok(unsigned int n, unsigned int k) {
 unsigned int nchoosek(unsigned int n, unsigned int k) {
     return factorialtok(n,k)/factorial(n-k);
 }
+
+/*
+ *
+ * Matrix Algorithms
+ *
+ */
+
+VectorN& leastSquaresApproximation(VectorN &x,
+                                  VectorN &y,
+                                  unsigned int deg)
+{
+    unsigned int i, j;
+    unsigned int dim = x.dim();
+    deg++; // this is because we need an extra spot
+
+    if (x.dim() != y.dim()) {
+        // cerr << "leastSquaresApproximation: Dimensions do not match" << endl;
+        return y;
+    }
+
+    Matrix mat(dim, deg);
+    for (i = 0; i < dim; i++) {
+        mat[i][0] = 1;
+        for (j = 1; j < deg; j++) {
+            mat[i][j] = mat[i][j-1]*x[i];
+        }
+    }
+
+    Matrix matT(mat);
+    matT.trans();
+
+    // cout << mat << endl << endl;
+    // cout << matT << endl;
+    // cout << sol << endl << endl;
+
+    y *= matT;
+    // cout << sol << endl;
+
+    (matT*mat).rref(y);
+
+    return y;
+}
+

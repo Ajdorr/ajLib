@@ -35,6 +35,9 @@ void bTree_ExecAll(struct bTree*,
 // 0 upon success -1 on failure
 int bTree_Delete(struct bTree*, void* /*key*/, unsigned int /*length*/);
 
+// deletes all nodes in the tree
+void bTree_DeleteAll(struct bTree*);
+
 // search for a node with key key
 // removes the node, but returns the data
 void* bTree_Extract(struct bTree*, void* /*key*/, unsigned int /*length*/);
@@ -54,6 +57,7 @@ public:
     void* search(void* k, unsigned int l){return bTree_Search(tree, k, l);}
     void execAll(void(*f)(void*,void*), void* inf){bTree_ExecAll(tree, f, inf);}
     int remove(void* k, unsigned int l){return bTree_Delete(tree, k, l);}
+    void removeAll() { bTree_DeleteAll(tree);}
 
 };
 

@@ -1,11 +1,12 @@
-#ifndef JMATH_H
-#define JMATH_H
+#ifndef AJMATH_H
+#define AJMATH_H
 #include <math.h>
 #include "sequence.h"
 #include "matrix.h"
 #include "matrix3.h"
 
 #define PI 3.14159
+#define DPI 6.28318
 #define DEG2RAD 3.14159/180
 
 /*
@@ -14,11 +15,6 @@
  *
  *
  */
-
-namespace ajMath {
-    static Vector3 Zero = Vector3(0.0, 0.0, 0.0);
-    static Vector3 One = Vector3(1.0, 1.0, 1.0);
-}
 
 #ifndef SWAP
 #define SWAP(a,b) a=a^b;b=b^a;a=a^b;
@@ -40,7 +36,10 @@ unsigned int factorialtok(unsigned int,unsigned int);// n!/k! n > k
 unsigned int nchoosek(unsigned int, unsigned int);// n choose k function
 
 // Least Squares Approximation, takes two vectors and the degree
-// Linear Reduction
-VectorN leastSquaresApproximation(const VectorN &x, const VectorN &y);
+// approximates the equation y=Ax deg is the degree
+// of the expected polynomial
+// y is changed in this process, and alo returned
+// x should be left unchanged
+VectorN& leastSquaresApproximation(VectorN &x, VectorN &y, unsigned int deg);
 
-#endif // JMATH_H
+#endif // AJMATH_H

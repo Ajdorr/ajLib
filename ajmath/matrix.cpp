@@ -21,14 +21,21 @@ VectorN::VectorN(){
 
 VectorN::VectorN(const VectorN &v) {
     n = v.n;
-    V = new double[n];
+    V = new MATRIX_TYPE[n];
     for (unsigned int i = 0; i < v.n; i++)
         V[i] = v.V[i];
 }
 
-VectorN::VectorN(double *_v, unsigned int _n){
+VectorN::VectorN(unsigned int _n){
     n = _n;
-    V = new double[n];
+    V = new MATRIX_TYPE[n];
+}
+
+
+
+VectorN::VectorN(MATRIX_TYPE *_v, unsigned int _n){
+    n = _n;
+    V = new MATRIX_TYPE[n];
     for (unsigned int i = 0; i < _n; i++)
         V[i] = _v[i];
 }
@@ -46,7 +53,7 @@ VectorN& VectorN::operator=(const VectorN &v) {
         delete[] V;
 
     n = v.n;
-    V = new double[n];
+    V = new MATRIX_TYPE[n];
     for (unsigned int i = 0; i < v.n; i++) // deep copy
         V[i] = v.V[i];
 
@@ -60,7 +67,7 @@ VectorN VectorN::operator+(const VectorN &v) {
         return ng;
 
     ng.n = n;
-    ng.V = new double[n];
+    ng.V = new MATRIX_TYPE[n];
 
     for (unsigned int i = 0; i < n; i++)
         ng.V[i] = V[i] + v.V[i];
@@ -74,7 +81,7 @@ VectorN VectorN::operator-(const VectorN &v){
         return ng;
 
     ng.n = n;
-    ng.V = new double[n];
+    ng.V = new MATRIX_TYPE[n];
 
     for (unsigned int i = 0; i < n; i++)
         ng.V[i] = V[i] - v.V[i];
@@ -105,11 +112,11 @@ VectorN& VectorN::operator-=(const VectorN &v){
 
 VectorN& VectorN::operator*=(const Matrix &A) {
     unsigned int i, j;
-    double *t;
+    MATRIX_TYPE *t;
 
     if (A.m != n)
         return *this;
-    t = new double[A.n];
+    t = new MATRIX_TYPE[A.n];
 
     for (i = 0; i < A.n; i++){
         t[i] = 0;
@@ -125,8 +132,8 @@ VectorN& VectorN::operator*=(const Matrix &A) {
 }
 
 
-double VectorN::operator*(const VectorN &v) {
-    double ret = 0;
+MATRIX_TYPE VectorN::operator*(const VectorN &v) {
+    MATRIX_TYPE ret = 0;
     if (v.n != n)
         return ret;
 
@@ -138,7 +145,7 @@ double VectorN::operator*(const VectorN &v) {
 
 
 // Scalar argumented operations
-VectorN VectorN::operator*(const double a) {
+VectorN VectorN::operator*(const MATRIX_TYPE a) {
     VectorN ng(*this);
 
     ng *=a;
@@ -146,7 +153,7 @@ VectorN VectorN::operator*(const double a) {
     return ng;
 }
 
-VectorN VectorN::operator/(const double a) {
+VectorN VectorN::operator/(const MATRIX_TYPE a) {
     VectorN ng(*this);
 
     ng *= 1/a;
@@ -155,21 +162,21 @@ VectorN VectorN::operator/(const double a) {
 }
 
 // Compound Operations
-VectorN& VectorN::operator*=(const double a) {
+VectorN& VectorN::operator*=(const MATRIX_TYPE a) {
     for (unsigned int i = 0; i < n; i++)
         V[i] *= a;
 
     return *this;
 }
 
-VectorN& VectorN::operator/=(const double a){
+VectorN& VectorN::operator/=(const MATRIX_TYPE a){
     *this *= 1/a;
 
     return *this;
 }
 
 // Accessibility Operators
-double& VectorN::operator[](const int i) {
+MATRIX_TYPE& VectorN::operator[](const int i) {
     return V[i];
 }
 
@@ -194,7 +201,7 @@ unsigned int VectorN::dim() const {
 
 VectorN VectorN::unit() {
     VectorN ng;
-    double mg = this->mag();
+    MATRIX_TYPE mg = this->mag();
     if (mg == 0)
         return ng;
 
@@ -204,8 +211,8 @@ VectorN VectorN::unit() {
     return ng;
 }
 
-double VectorN::mag() {
-    double ret = 0;
+MATRIX_TYPE VectorN::mag() {
+    MATRIX_TYPE ret = 0;
     for (unsigned int i = 0; i < n; i++)
         ret += V[i]*V[i];
 
@@ -218,7 +225,7 @@ void VectorN::zero(){
 
 }
 
-VectorN operator*(const double &a, const VectorN &v) {
+VectorN operator*(const MATRIX_TYPE &a, const VectorN &v) {
     VectorN ng(v);
     ng *= a;
     return ng;
@@ -250,8 +257,8 @@ void Matrix::delMat() {
 
 // using row zero out index (x,y)
 // returns the multiplication factor
-double Matrix::zeroOnIndex(unsigned int row, unsigned int x, unsigned int y) {
-    double t = -M[x][y]/M[row][y];
+MATRIX_TYPE Matrix::zeroOnIndex(unsigned int row, unsigned int x, unsigned int y) {
+    MATRIX_TYPE t = -M[x][y]/M[row][y];
     unsigned int i;
 
     for (i = (y+1)%m; i != y; i= (i+1)%m) {
@@ -283,13 +290,33 @@ Matrix::Matrix(Matrix const &p) {
     n = p.n;
     m = p.m;
 
-    M = new double*[n];
+    M = new MATRIX_TYPE*[n];
     for (i = 0; i < n; i++) {
-        M[i] = new double[m];
+        M[i] = new MATRIX_TYPE[m];
         for (j = 0; j < m; j++) {
             this->M[i][j] = p.M[i][j];
         }
     }
+}
+
+
+Matrix::Matrix(unsigned int a)
+{
+    unsigned int i;
+
+    if (a == 0) {
+        M = NULL;
+        m = n = 0;
+        return;
+    }
+
+    n = a;
+    m = a;
+
+    M = new MATRIX_TYPE*[a];
+    for (i = 0; i < n; i++)
+        M[i] = new MATRIX_TYPE[a];
+
 }
 
 Matrix::Matrix(unsigned int a, unsigned int b)
@@ -305,39 +332,56 @@ Matrix::Matrix(unsigned int a, unsigned int b)
     n = a;
     m = b;
 
-    M = new double*[a];
+    M = new MATRIX_TYPE*[a];
     for (i = 0; i < n; i++)
-        M[i] = new double[b];
+        M[i] = new MATRIX_TYPE[b];
 
 }
 
-Matrix::Matrix(double **d, unsigned int _n, unsigned int _m) {
+Matrix::Matrix(MATRIX_TYPE **d, unsigned int _n, unsigned int _m) {
     unsigned int i, j;
     n = _n;
     m = _m;
 
-    M = new double*[n];
+    M = new MATRIX_TYPE*[n];
     for (i = 0; i < n; i++) {
-        M[i] = new double[m];
+        M[i] = new MATRIX_TYPE[m];
         for (j = 0; j < m; j++)
             M[i][j] = d[i][j];
     }
 }
 
-Matrix::Matrix(double *d, unsigned int _n, unsigned int deg) {
+/*
+Matrix::Matrix(MATRIX_TYPE *d, unsigned int _n, unsigned int deg) {
     unsigned int i, j;
     n = _n;
     m = deg+1;
 
-    M = new double*[n];
+    M = new MATRIX_TYPE*[n];
     for (i=0; i < n; i++){
-        M[i] = new double[m];
+        M[i] = new MATRIX_TYPE[m];
         M[i][0] = 1;
         for (j=0; j < deg; j++) {
             M[i][j+1] = M[i][j]*d[i];
         }
     }
 }
+
+Matrix::Matrix(VectorN *d, unsigned int _n, unsigned int deg) {
+    unsigned int i, j;
+    n = _n;
+    m = deg+1;
+
+    M = new MATRIX_TYPE*[n];
+    for (i=0; i < n; i++){
+        M[i] = new MATRIX_TYPE[m];
+        M[i][0] = 1;
+        for (j=0; j < deg; j++) {
+            M[i][j+1] = M[i][j]*d[i];
+        }
+    }
+} */
+
 
 Matrix::~Matrix()
 {
@@ -348,7 +392,7 @@ Matrix::~Matrix()
 }
 
 
-void Matrix::init(double **d, unsigned int _n,unsigned int _m) {
+void Matrix::init(MATRIX_TYPE **d, unsigned int _n,unsigned int _m) {
     unsigned int i, j;
     if (M){
         for (i = 0; i < n; i++){
@@ -359,9 +403,9 @@ void Matrix::init(double **d, unsigned int _n,unsigned int _m) {
 
     n = _n;
     m = _m;
-    M = new double*[n];
+    M = new MATRIX_TYPE*[n];
     for (i = 0; i < n; i++) {
-        M[i] = new double[m];
+        M[i] = new MATRIX_TYPE[m];
         for (j = 0; j < m; j++)
             M[i][j] = d[i][j];
     }
@@ -380,7 +424,7 @@ void Matrix::init(double **d, unsigned int _n,unsigned int _m) {
 
 // Assignement Operators
 
-Matrix& Matrix::operator=(const double d) {
+Matrix& Matrix::operator=(const MATRIX_TYPE d) {
     unsigned int i,j;
 
     for (i = 0; i < n; i++) {
@@ -404,9 +448,9 @@ Matrix& Matrix::operator=(const Matrix &p) {
     n = p.n;
     m = p.m;
 
-    M = new double*[n];
+    M = new MATRIX_TYPE*[n];
     for (i = 0; i < n; i++) {
-        M[i] = new double[m];
+        M[i] = new MATRIX_TYPE[m];
         for (j = 0; j < m; j++) {
             this->M[i][j] = p.M[i][j];
         }
@@ -452,7 +496,7 @@ Matrix Matrix::operator-(){
     return R;
 }
 
-Matrix Matrix::operator-(const double d){
+Matrix Matrix::operator-(const MATRIX_TYPE d){
     unsigned int i, j;
     Matrix R(*this);
 
@@ -485,7 +529,7 @@ Matrix Matrix::operator-(const Matrix &p) {
 
 // Multiplication
 
-Matrix Matrix::operator*(double a) {
+Matrix Matrix::operator*(MATRIX_TYPE a) {
     unsigned int i, j;
     Matrix R(*this);
 
@@ -506,9 +550,9 @@ Matrix Matrix::operator*(const Matrix &p) {
            return R;
     }
 
-    R.M = new double*[n];
+    R.M = new MATRIX_TYPE*[n];
     for (i = 0; i < this->n; i++) {
-        R.M[i] = new double[p.m];
+        R.M[i] = new MATRIX_TYPE[p.m];
         for (j = 0; j < p.m; j++) {
             R.M[i][j] = 0;
             for (k = 0; k < this->m; k++) {
@@ -583,7 +627,7 @@ Matrix& Matrix::operator-=(const Matrix &p) {
     return *this;
 }
 
-Matrix& Matrix::operator*=(const double d) {
+Matrix& Matrix::operator*=(const MATRIX_TYPE d) {
     unsigned int i, j;
 
     for (i = 0; i < n; i++) {
@@ -597,7 +641,7 @@ Matrix& Matrix::operator*=(const double d) {
 
 Matrix& Matrix::operator*=(const Matrix &p) {
     unsigned int i, j, k;
-    double **fng;
+    MATRIX_TYPE **fng;
 
     if (this->m != p.n) {
         this->delMat();
@@ -607,9 +651,9 @@ Matrix& Matrix::operator*=(const Matrix &p) {
         return *this;
     }
 
-    fng = new double*[n];
+    fng = new MATRIX_TYPE*[n];
     for (i = 0; i < this->n; i++) {
-        fng[i] = new double[(p.m)];
+        fng[i] = new MATRIX_TYPE[(p.m)];
         for (j = 0; j < p.m; j++) {
             fng[i][j] = 0;
             for (k = 0; k < this->m; k++) {
@@ -653,7 +697,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix& A) {
 
 // Member and Pointer Operators
 
-double* Matrix::operator[](unsigned int i) {
+MATRIX_TYPE* Matrix::operator[](unsigned int i) {
     return M[i];
 }
 
@@ -673,7 +717,7 @@ unsigned int Matrix::dimc() const{
 
 void Matrix::trans() {
     unsigned int i, j;
-    double t;
+    MATRIX_TYPE t;
     if (n == m) {
         for (i = 0; i < n; i++) {
             for (j = 0; j < i; j++) {
@@ -684,10 +728,10 @@ void Matrix::trans() {
         }
     }
     else {
-        double **T;
-        T = new double*[m];
+        MATRIX_TYPE **T;
+        T = new MATRIX_TYPE*[m];
         for (i = 0; i < m; i++)
-            T[i] = new double[n];
+            T[i] = new MATRIX_TYPE[n];
 
         for (i = 0; i < n; i++)
             for (j = 0; j < m; j++)
@@ -722,10 +766,10 @@ void Matrix::zero() {
             M[i][j] = 0;
 }
 
-double Matrix::det() {
+MATRIX_TYPE Matrix::det() {
     int temp[n], sgn = 1;
     unsigned int i;
-    double ret=0, term;
+    MATRIX_TYPE ret=0, term;
     for (i = 0; i < n; i++) temp[i] = i;
     sequence col(SEQT_PERM, temp, n, n);
 
@@ -741,7 +785,7 @@ double Matrix::det() {
 }
 
 void Matrix::swpRow(unsigned int x, unsigned int y) {
-    double t;
+    MATRIX_TYPE t;
     if (x == y)
        return;
     for (unsigned int i = 0; i < m; i++) {
@@ -751,13 +795,13 @@ void Matrix::swpRow(unsigned int x, unsigned int y) {
     }
 }
 
-void Matrix::mulRow(double a, unsigned int x) {
+void Matrix::mulRow(MATRIX_TYPE a, unsigned int x) {
     for (unsigned int i=0; i<m; i++)
         (M[x][i]) *= a;
 
 }
 
-void Matrix::addLinMul(double a, unsigned int x, unsigned int y) {
+void Matrix::addLinMul(MATRIX_TYPE a, unsigned int x, unsigned int y) {
     if (x == y)
         return;
     for (unsigned int i=0; i<m; i++)
@@ -808,7 +852,7 @@ void Matrix::rref() {
 
 void Matrix::rref(VectorN &sol) {
     unsigned int i, j;
-    double t;
+    MATRIX_TYPE t;
 
     for (i = 0; i < n; i++) {
 
@@ -855,7 +899,7 @@ void Matrix::rref(VectorN &sol) {
 }
 
 Matrix Matrix::inv() {
-    double t;
+    MATRIX_TYPE t;
     unsigned int i, j;
     Matrix cpy(*this), ret(n,m);
     ret.iden();
@@ -919,9 +963,9 @@ void Matrix::resz(unsigned int a, unsigned int b) {
         return;
     }
 
-    M = new double*[n];
+    M = new MATRIX_TYPE*[n];
     for (i = 0; i < n; i++) {
-        M[i] = new double[m];
+        M[i] = new MATRIX_TYPE[m];
     }
 }
 
@@ -932,38 +976,10 @@ void Matrix::resz(unsigned int a, unsigned int b) {
  *
  */
 
-Matrix operator*(const double& d, const Matrix &p) {
+Matrix operator*(const MATRIX_TYPE& d, const Matrix &p) {
     Matrix R = p;
     R *= d;
 
     return R;
-}
-
-/*
- *
- * Matrix Algorithms
- *
- */
-
-VectorN LstSqApprox(double *X, double *Y, unsigned int n, unsigned int deg) {
-    VectorN sol(Y, n);
-    Matrix mat(X, n, deg), matT(mat);
-
-    matT.trans();
-    // cout << mat << endl << endl;
-    // cout << matT << endl;
-    // cout << sol << endl << endl;
-
-    sol *= matT;
-    // cout << sol << endl;
-
-    matT *= mat;
-    // cout << matT << endl << endl;
-
-    matT.rref(sol);
-
-    // cout << matT << endl << endl;
-
-    return sol;
 }
 

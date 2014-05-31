@@ -1,36 +1,56 @@
 #include "window.h"
 
+
 /*
  *
- *  Window Manager
+ * Input
  *
  */
 
-Window *windowList[WINDOW_MAX_WINDOWS];
-int idleUpdate;
+BTree keyDown(NULL);
+int mouseDeltaX, mouseDeltaY;
+int mousePosX, mousePosY;
+char mouseDown[8];
+char keyboardDown[256];
 
-void windowManagerResize(int w, int h) {
-    if (windowList[glutGetWindow()] != NULL)
-        windowList[glutGetWindow()]->resize(w,h);
-}
-
-
-void windowManagerDisplay(void) {
-    if (windowList[glutGetWindow()] != NULL)
-        windowList[glutGetWindow()]->display();
-}
-
-void windowManagerDisplayAll(void)
+void inputPressKey(unsigned char c, int, int)
 {
-    int i;
-    for (i=0; i < WINDOW_MAX_WINDOWS; i++) {
-        if (windowList[i] != NULL) {
-            glutSetWindow(i);
-            glutPostRedisplay();
-        }
-    }
+  keyboardDown[(int)c] = 0xFF;
+  keyDown.insert(&c, sizeof(char), (void*)0xFFFFFFFF);
+}
 
-    usleep(50000);
+void inputReleaseKey(unsigned char c, int, int) { keyboardDown[(int)c] = 0x0; }
+void inputClearKeyPress() { keyDown.removeAll(); }
+
+void inputMousePress(int b, int s, int x, int y)
+{
+  mouseDeltaX = x - mousePosX;
+  mouseDeltaY = y - mousePosY;
+  mousePosX = x;
+  mousePosY = y;
+
+  if (s == GLUT_UP) mouseDown[(int)b] = 0x0;
+  else mouseDown[(int)b] = 0xFF;
+}
+
+void inputMouseMove(int x, int y)
+{
+  mouseDeltaX = x - mousePosX;
+  mouseDeltaY = y - mousePosY;
+  mousePosX = x;
+  mousePosY = y;
+}
+
+/*
+void mouseEnter(int state);
+void mouseExit(int state);
+*/
+
+int Input::getKey(unsigned char c) { return (mouseDown[(int)c] != 0x0); }
+int Input::getKeyDown(unsigned char c) { return (mouseDown[(int)c] == 0x0); }
+int Input::getKeyUp(unsigned char c)
+{
+  return (keyDown.search(&c, sizeof(char)) != NULL);
 }
 
 /*
@@ -39,95 +59,60 @@ void windowManagerDisplayAll(void)
  *
  */
 
-void Window::update(){}
+int id;
+std::string name; // name of the window
+Scene *currScene;
 
-void Window::initWindows(int argc, char** argv) {
-    glutInit(&argc, argv);
-    idleUpdate = 0;
-}
-
-void Window::setIdleUpdate(int) {
-    if (idleUpdate) GLUI_Master.set_glutIdleFunc(windowManagerDisplayAll);
-    else GLUI_Master.set_glutIdleFunc(NULL);
-}
-
-Window::Window(int posx, int posy, int sizex, int sizey, const char* nm):
-    objlist(destroyObject)
+void windowResize(int w, int h)
 {
-    name  = nm;
-    px = posx; py = posy;
-    sx = sizex; sy = sizey;
+  if (currScene != NULL) currScene->resize(w,h);
+}
 
+void windowDisplay()
+{
+  if (currScene != NULL)
+    currScene->display();
+}
+
+int windowInit(int argc, char** argv, const char* nm)
+{
+    glutInit(&argc, argv);
     // Set video mode: double-buffered, color, depth-buffered
-    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 
-    // Create window
-    glutInitWindowPosition (posx, posy);
-    glutInitWindowSize(sizex, sizey);
+    // Create window and set local variables
+    name = nm;
+    if (currScene != NULL)
+      glutInitWindowSize(currScene->getWidth(), currScene->getHeight());
     id = glutCreateWindow(nm);
 
-    if (id > WINDOW_MAX_WINDOWS) throw "Window::Window: Created too many Windows";
-    else if (id == 0) throw "Window::Window: recieved 0 id";
-    else if (id < 0) throw "Window::Window: negative id... ummm?";
-    // else if (id < WINDOW_MAX_WINDOWS < 1) throw "Window::Window: Issue creating the window";
+    if (id <= 0) return -1;
 
-    windowList[id] = this;
+    // windowList[id] = this;
+    glutDisplayFunc(windowDisplay);
+    glutReshapeFunc(windowResize);
+    glutKeyboardFunc(inputPressKey);
+    glutKeyboardUpFunc(inputReleaseKey);
+    glutMouseFunc(inputMousePress);
+    glutMotionFunc(inputMouseMove);
+    glutPassiveMotionFunc(inputMouseMove);
 
-    // Setup callback functions to handle events
-    glutReshapeFunc(windowManagerResize); // Call myReshape whenever window is resized
-    glutDisplayFunc(windowManagerDisplay);   // Call display whenever new frame is needed
+    /* WIP
+    glutSpecialFunc();
+    glutSpecialFuncUp();
+    glutVisibilityFunc();
+    glutEntryFunc();
+    glutIdleFunc();
+    */
 
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+
+    return 0;
 }
 
-Window::~Window() {
-}
-
-
-void Window::start()
-{
-    glutMainLoop();
-}
-
-void Window::resize(int w, int h){
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(-w/2, w/2, -h/2, h/2);
-
-    // Update OpenGL viewport and internal variables
-    glViewport(0,0, w,h);
-    sx = w;
-    sy = h;
-}
-
-void Window::display() {
-    // render objects
-    update();
-
-    glClearColor(0.7f,0.7f,0.9f,1.0f);
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glPushMatrix();
-
-    objlist.execAll(renderAndUpdateObject, NULL);
-
-    glPopMatrix();
-    glFlush();
-    glutSwapBuffers();
-}
-
-
-int Window::attachObject(Object* obj)
-{
-    return objlist.insert(obj->getName(),
-                          obj->getNameLen(),
-                          obj);
-}
-
-int Window::getId()
-{
-    return id;
-}
+void windowSetScene(Scene *s) { currScene = s; }
+Scene* windowGetScene() { return currScene; }
+int windowGetId() { return id; }
+void windowMainLoop() { glutMainLoop(); }
